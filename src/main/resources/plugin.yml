@@ -11,8 +11,7 @@ commands:
     tp:
         description: Teleport command
         usage: /<command> <arg1> [arg2] [arg3]
-		
-		
+        
 permissions:
     TestPlugin.*:
         description: Gives access to all TestPlugin commands
@@ -37,4 +36,3 @@ permissions:
     TestPlugin.tp.coord:
         description: Teleport Player to x,y,z coordinate
         default: op
-		
