@@ -10,13 +10,14 @@ public final class TestPlugin extends JavaPlugin {
 	}
 	@Override
 	public void onEnable(){
-		getLogger().info("Disabled!");
+		getLogger().info("TestPlugin has been Disabled!");
+		
 		this.getCommand("test").setExecutor(new TestPluginCommandExecutor (this));
 		this.getCommand("tp").setExecutor(new TestPluginCommandExecutor (this));
 	}
 	@Override
 	public void onDisable(){
-		getLogger().info("Enabled!");
+		getLogger().info("TestPlugin Version 0.0.1 has been Enabled!");
 	}
 
 }

@@ -5,36 +5,36 @@ description: TestPlugin
 
 version: 0.0.1
 commands:
-	test:
-		description: Test if Plugin is working.
-		usage: /<command>
-	tp:
-		description: Teleport command
-		usage: /<command> <arg1> [arg2] [arg3]
+    test:
+        description: Test if Plugin is working.
+        usage: /<command>
+    tp:
+        description: Teleport command
+        usage: /<command> <arg1> [arg2] [arg3]
 		
 		
 permissions:
-	TestPlugin.*:
-		description: Gives access to all TestPlugin commands
-		children:
-			TestPlugin.test: true
-			TestPlugin.tp: true
-	TestPlugin.test:
-		description: Test if plugin is working
-		default: op
-	TestPlugin.tp:
-		description: Gives access to all TP commands
-		children:
-			TestPlugin.tp.me: true
-			TestPlugin.tp.others: true
-			TestPlugin.tp.coord: true
-	TestPlugin.tp.me:
-		description: Teleport yourself to a player
-		default: op
-	TestPlugin.tp.others:
-		description: Teleport Player1 to Player2
-		default: op
-	TestPlugin.tp.coord:
-		description: Teleport Player to x,y,z coordinate
-		default: op
+    TestPlugin.*:
+        description: Gives access to all TestPlugin commands
+        children:
+            TestPlugin.test: true
+            TestPlugin.tp: true
+    TestPlugin.test:
+        description: Test if plugin is working
+        default: op
+    TestPlugin.tp:
+        description: Gives access to all TP commands
+        children:
+            TestPlugin.tp.me: true
+            TestPlugin.tp.others: true
+            TestPlugin.tp.coord: true
+    TestPlugin.tp.me:
+        description: Teleport yourself to a player
+        default: op
+    TestPlugin.tp.others:
+        description: Teleport Player1 to Player2
+        default: op
+    TestPlugin.tp.coord:
+        description: Teleport Player to x,y,z coordinate
+        default: op
 		
