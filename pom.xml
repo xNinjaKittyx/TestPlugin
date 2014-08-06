@@ -2,7 +2,20 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.firefwing24</groupId>
   <artifactId>TestPlugin</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
+  
+   <build>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <configuration>
+                  <source>1.7</source>
+                  <target>1.7</target>
+              </configuration>
+          </plugin>
+      </plugins>
+   </build>
   
   <repositories>
        <repository>

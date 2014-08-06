@@ -1,5 +1,5 @@
 name: TestPlugin
-main: io.github.firefwing24.TestPlugin
+main: io.github.firefwing24.TestPlugin.TestPlugin
 author: xNinjaKittyx
 description: TestPlugin
 
@@ -10,7 +10,7 @@ commands:
         usage: /<command>
     tp:
         description: Teleport command
-        usage: /<command> <arg1> [arg2] [arg3]
+        usage: "/<command> <arg1> [arg2] [arg3]"
         
 permissions:
     TestPlugin.*:

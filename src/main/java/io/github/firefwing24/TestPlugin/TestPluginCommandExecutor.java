@@ -5,9 +5,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
-public class TestPluginCommandExecutor extends JavaPlugin implements CommandExecutor {
+public class TestPluginCommandExecutor implements CommandExecutor {
 	private final TestPlugin plugin;
  
 	public TestPluginCommandExecutor(TestPlugin plugin) {
@@ -55,8 +54,8 @@ public class TestPluginCommandExecutor extends JavaPlugin implements CommandExec
 				}
 				else if (args.length == 2) {
 					if (player.hasPermission("TestPlugin.tp.others")) {
-						Player target1 = getServer().getPlayer(args[0]);
-						Player target2 = getServer().getPlayer(args[1]);
+						Player target1 = player.getServer().getPlayer(args[0]);
+						Player target2 = player.getServer().getPlayer(args[1]);
 						
 						Location location = target2.getLocation();
 						
@@ -70,12 +69,17 @@ public class TestPluginCommandExecutor extends JavaPlugin implements CommandExec
 				else if (args.length == 3) {
 					if (player.hasPermission("TestPlugin.tp.coord"))
 					{
-						final double x = Double.parseDouble(args[0]);
-						final double y = Double.parseDouble(args[1]);
-						final double z = Double.parseDouble(args[2]);
-						Location location = new Location(player.getWorld(),x,y,z);
-						player.teleport(location);
-						//TP to coordinates (arg1,arg2,arg3)
+						try {
+							final double x = Double.parseDouble(args[0]);
+							final double y = Double.parseDouble(args[1]);
+							final double z = Double.parseDouble(args[2]);
+							Location location = new Location(player.getWorld(),x,y,z);
+							player.teleport(location);
+							//TP to coordinates (arg1,arg2,arg3)
+						}	catch (NumberFormatException ex) {
+							player.sendMessage("Invalid Location");
+						}
+						return true;
 					}
 					else
 						sender.sendMessage("You don't have permission!");
@@ -88,8 +92,8 @@ public class TestPluginCommandExecutor extends JavaPlugin implements CommandExec
 			
 			else {
 				if (args.length == 2) {
-					Player target1 = getServer().getPlayer(args[0]);
-					Player target2 = getServer().getPlayer(args[1]);
+					Player target1 = sender.getServer().getPlayer(args[0]);
+					Player target2 = sender.getServer().getPlayer(args[1]);
 					
 					Location location = target2.getLocation();
 					
