@@ -5,32 +5,36 @@ description: TestPlugin
 
 version: 0.0.1
 commands:
+    fly:
+        description: Toggle Fly
+        usage: "Usage: /fly [player]"
     home:
         description: Spawn at home location
-        usage: /<command>
+        usage: "Usage: /home"
     kill:
         description: Kill a player.
-        usage: "/<command> <player>"
+        usage: "Usage: /kill <player>"
     sethome:
         description: Set your home location
-        usage: /<command>
+        usage: "Usage: /kill <player>"
     test:
         description: Test if Plugin is working.
-        usage: /<command>
+        usage: "Usage: /test"
     tp:
         description: Teleport to someone or somewhere
-        usage: "/<command> <arg1> [arg2] [arg3]"
+        usage: "Usage: /tp <player> || <player1> <player2> || <x> <y> <z>"
     who:
         description: Show who's online
-        usage: /<command>
+        usage: "Usage: /who"
     w:
         description: Whisper to a player.
-        usage: /<command> <player> <message>
+        usage: "Usage: /w <player>"
         
 permissions:
     TestPlugin.*:
         description: Gives access to all TestPlugin commands
         children:
+            TestPlugin.fly: true
             TestPlugin.home: true
             TestPlugin.kill: true
             TestPlugin.sethome: true
@@ -38,6 +42,17 @@ permissions:
             TestPlugin.tp: true
             TestPlugin.who: true
             TestPlugin.whisper: true
+    TestPlugin.fly
+        description: Give player all Fly Related permissions
+        children:
+            TestPlugin.fly.me
+            TestPlugin.fly.others
+    TestPlugin.fly.me
+        description: Allow player to toggle personal fly
+        default: op
+    TestPlugin.fly.others
+        description: Allow player to toggle other player's fly
+        default: op
     TestPlugin.home:
         description: Teleport to home
         default: true

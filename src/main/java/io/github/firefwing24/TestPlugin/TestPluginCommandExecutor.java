@@ -3,6 +3,7 @@ package io.github.firefwing24.TestPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -183,13 +184,9 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 				return true;
 			} else if (target.isOnline()) {
 				
-				ArrayList <String> message = new ArrayList <String>();
-				for (int i=1; i<args.length;i++)
-				{
-					message.add(args[i]);
-				}
+				String message = StringUtils.join(args, ' ',1,args.length-1);
 				
-				target.sendMessage(ChatColor.GRAY + "[Whisper: " +sender.getName() + "]: " + message.toString());
+				target.sendMessage(ChatColor.GRAY + "[Whisper: " +sender.getName() + "]: " + message);
 				return true;
 			}
 			else
@@ -197,6 +194,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			
 		}
 		
+		//Kill Command
 		if (cmd.getName().equalsIgnoreCase("kill")) {
 			if (!sender.hasPermission("TestPlugin.kill")) {
 				sender.sendMessage(ChatColor.RED + "You don't have permission!");
@@ -233,6 +231,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			
 		}
 		
+		//SetHome Command
 		if (cmd.getName().equalsIgnoreCase("sethome")) {
 			if (!sender.hasPermission("TestPlugin.sethome")) {
 				sender.sendMessage(ChatColor.RED + "You don't have permission!");
@@ -276,7 +275,65 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			return true;
 		}
 		
-		
+		//FLY COMMAND
+		if (cmd.getName().equalsIgnoreCase("fly")) {
+			if (!sender.hasPermission("TestPlugin.fly")) {
+				sender.sendMessage(ChatColor.RED + "You don't have permission!");
+				return true;
+			}
+			
+			if (!(sender instanceof Player)) {
+				sender.sendMessage("This can only be used by in-game Players");
+				return true;	
+			}
+			
+			if (args.length > 1)
+				return false;
+			
+			Player player = (Player) sender;
+			//Set Player to allow flight
+			if (args.length == 0) {
+				if (!sender.hasPermission("TestPlugin.fly.me")) {
+					sender.sendMessage(ChatColor.RED + "You don't have permission!");
+					return true;
+				}
+				if (player.getAllowFlight()) {
+					player.setAllowFlight(false);
+					player.sendMessage(ChatColor.AQUA + "Flying Disabled!");
+				} else {
+					player.setAllowFlight(true);
+					player.sendMessage(ChatColor.AQUA + "Flying Disabled!");
+				}
+				return true;
+			}
+			
+			//Allow different player to fly
+			else if (args.length == 1) {
+				if (!sender.hasPermission("TestPlugin.fly.others")) {
+					sender.sendMessage(ChatColor.RED + "You don't have permission!");
+					return true;
+				}
+				
+				Player target = player.getServer().getPlayer(args[0]);
+				if (target == null) {
+					sender.sendMessage(ChatColor.RED + args[0] + "is not online");
+					return true;
+				}
+				if (target.getAllowFlight()) {
+					target.setAllowFlight(false);
+					player.sendMessage(ChatColor.AQUA + "Flying Disabled!");
+				} else {
+					player.setAllowFlight(true);
+					player.sendMessage(ChatColor.AQUA + "Flying Disabled!");
+				}
+				return true;
+			}
+			
+			return false;
+				
+				
+				
+		}
 		
 		//args.length is number of arguments. args is an array :)
 		/*
