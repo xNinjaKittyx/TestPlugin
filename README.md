@@ -60,8 +60,8 @@ permissions:
     TestPlugin.heal:
         desciption: Give all heal commands
         children:
-            TestPlugin.heal.me
-            TestPlugin.heal.others
+            TestPlugin.heal.me: true
+            TestPlugin.heal.others: true
     TestPlugin.heal.me:
         description: Heal yourself
         default: op
