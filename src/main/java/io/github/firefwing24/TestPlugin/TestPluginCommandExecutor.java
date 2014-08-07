@@ -29,17 +29,14 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 				Player player = (Player) sender;
 				if (player.hasPermission("TestPlugin.test") || player.isOp()) {
 					player.sendMessage(ChatColor.GREEN + "TestPlugin is working! Sent from Player");
-					return true;
 				}
 				else {
 					player.sendMessage(ChatColor.RED + "You don't have permission!");
-					return true;
 				}
 			} else {
 				sender.sendMessage("TestPlugin is working! Sent from non-player");
-				return true;
 			}
-			
+			return true;
 		}
 		
 		//TP COMMAND
@@ -100,7 +97,6 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 						}	catch (NumberFormatException ex) {
 							player.sendMessage(ChatColor.RED + "Invalid Location");
 						}
-						return true;
 					}
 					else
 						sender.sendMessage(ChatColor.RED + "You don't have permission!");
@@ -148,10 +144,18 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 					for (Player p : Bukkit.getOnlinePlayers()) {
 						onlinePlayers.add(p.getName());
 					}
-					sender.sendMessage(ChatColor.YELLOW + "Online Players: " + ChatColor.WHITE + onlinePlayers.toString());
-				
+					player.sendMessage(ChatColor.YELLOW + "Online Players: " + ChatColor.WHITE + onlinePlayers.toString());
+					onlinePlayers.clear();
 				}
 			}
+			else {
+				for (Player p : Bukkit.getOnlinePlayers()) {
+					onlinePlayers.add(p.getName());
+				}
+				sender.sendMessage(ChatColor.YELLOW + "Online Players: " + ChatColor.WHITE + onlinePlayers.toString());
+				onlinePlayers.clear();
+			}
+			return true;
 		}
 		
 		//Whisper Command
@@ -159,6 +163,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 		if (cmd.getName().equalsIgnoreCase("w")) {
 			if (!sender.hasPermission("TestPlugin.whisper")) {
 				sender.sendMessage(ChatColor.RED + "You don't have permission!");
+				return true;
 			}
 			
 			if (!(sender instanceof Player)) {
@@ -176,41 +181,62 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			if (!target.isOnline()) {
 				player.sendMessage(ChatColor.RED + args[0] + " is not online!");
 				return true;
-			} else {
+			} else if (target.isOnline()) {
 				
-				target.sendMessage(player.getName() + ": ");
 				ArrayList <String> message = new ArrayList <String>();
 				for (int i=1; i<args.length;i++)
 				{
 					message.add(args[i]);
 				}
 				
-				target.sendMessage(sender.getName() + ": " + message.toString());
+				target.sendMessage(ChatColor.GRAY + "[Whisper: " +sender.getName() + "]: " + message.toString());
 				return true;
 			}
+			else
+				return false;
 			
 		}
 		
 		if (cmd.getName().equalsIgnoreCase("kill")) {
 			if (!sender.hasPermission("TestPlugin.kill")) {
 				sender.sendMessage(ChatColor.RED + "You don't have permission!");
+				return true;
 			}
-			Player target = sender.getServer().getPlayer(args[0]);
 			
-			if (args.length < 1)
-			
-			if (target == null) {
-				sender.sendMessage(ChatColor.RED + args[0] + "is not online");
-			} else {
+			if (sender instanceof Player) {
+				Player player = (Player) sender;
+
+				Player target = player.getServer().getPlayer(args[0]);
+				if (args.length < 1)
+					return false;
 				
-				target.setHealth(0);
+				if (target == null) {
+					sender.sendMessage(ChatColor.RED + args[0] + "is not online");
+				} else {
+					target.setHealth(0);
+				}
+				return true;
+			} else {
+				Player target = Bukkit.getServer().getPlayer(args[0]);
+				if (args.length < 1)
+					return false;
+				if (target == null) {
+					sender.sendMessage(ChatColor.RED + args[0] + "is not online");
+				} else {
+						
+					target.setHealth(0);
+				}
+				return true;
 			}
-			return true;
+			
+			
+			
 		}
 		
 		if (cmd.getName().equalsIgnoreCase("sethome")) {
 			if (!sender.hasPermission("TestPlugin.sethome")) {
 				sender.sendMessage(ChatColor.RED + "You don't have permission!");
+				return true;
 			}
 			
 			if (!(sender instanceof Player)) {
@@ -220,13 +246,17 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			
 			Player player = (Player) sender;
 			Location location = player.getLocation();
-			player.setBedSpawnLocation(location);
+			player.setBedSpawnLocation(location, true);
 			player.sendMessage(ChatColor.GREEN + "Home Set!");
+			return true;
 		}
 		
+		
+		//HOME COMMAND
 		if (cmd.getName().equalsIgnoreCase("home")) {
 			if (!sender.hasPermission("TestPlugin.home")) {
 				sender.sendMessage(ChatColor.RED + "You don't have permission!");
+				return true;
 			}
 			
 			
@@ -237,8 +267,13 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			
 			Player player = (Player) sender;
 			Location location = player.getBedSpawnLocation();
+			if (location == null) {
+				player.sendMessage("No Home Exists");
+				return false;
+			}
 			player.teleport(location);
 			player.sendMessage(ChatColor.GREEN + "Teleported to Home");
+			return true;
 		}
 		
 		
