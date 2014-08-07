@@ -3,7 +3,7 @@ main: io.github.firefwing24.TestPlugin.TestPlugin
 author: xNinjaKittyx
 description: TestPlugin
 
-version: 0.0.1
+version: 0.0.2
 commands:
     fly:
         description: Toggle Fly

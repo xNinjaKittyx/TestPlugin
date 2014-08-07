@@ -3,13 +3,13 @@ TestPlugin
 v. 0.0.2
 Creating a Test Plugin for Bukkit Minecraft
 
-commands:
+Commands:
     fly:
         description: Toggle Fly
         usage: "Usage: /fly [player]"
     heal:
         description: Heal player or yourself
-        usage: "Usage: /heal [player]
+        usage: "Usage: /heal [player]"
     home:
         description: Spawn at home location
         usage: "Usage: /home"
@@ -32,7 +32,7 @@ commands:
         description: Whisper to a player.
         usage: "Usage: /w <player>"
         
-Permissions:
+permissions:
     TestPlugin.*:
         description: Gives access to all TestPlugin commands
         children:
@@ -44,26 +44,26 @@ Permissions:
             TestPlugin.tp: true
             TestPlugin.who: true
             TestPlugin.whisper: true
-    TestPlugin.fly
+    TestPlugin.fly:
         description: Give player all Fly Related permissions
         children:
             TestPlugin.fly.me
             TestPlugin.fly.others
-    TestPlugin.fly.me
+    TestPlugin.fly.me:
         description: Allow player to toggle personal fly
         default: op
-    TestPlugin.fly.others
+    TestPlugin.fly.others:
         description: Allow player to toggle other player's fly
         default: op
-    TestPlugin.heal
+    TestPlugin.heal:
         desciption: Give all heal commands
         children:
             TestPlugin.heal.me
             TestPlugin.heal.others
-    TestPlugin.heal.me
+    TestPlugin.heal.me:
         description: Heal yourself
         default: op
-    TestPlugin.heal.others
+    TestPlugin.heal.others:
         description: Heal others (ability to use player syntax)
         default: op
     TestPlugin.home:
