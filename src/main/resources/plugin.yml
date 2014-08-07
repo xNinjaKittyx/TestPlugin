@@ -10,7 +10,7 @@ commands:
         usage: /<command>
     kill:
         description: Kill a player.
-        usage /<command> <player>
+        usage: "/<command> <player>"
     sethome:
         description: Set your home location
         usage: /<command>
@@ -38,13 +38,13 @@ permissions:
             TestPlugin.tp: true
             TestPlugin.who: true
             TestPlugin.whisper: true
-    TestPlugin.home
+    TestPlugin.home:
         description: Teleport to home
         default: true
-    TestPlugin.kill
+    TestPlugin.kill:
         description: Permission to kill players by command.
         default: op
-    TestPlugin.sethome
+    TestPlugin.sethome:
         description: Permission to set home.
         default: true
     TestPlugin.test:
@@ -65,9 +65,9 @@ permissions:
     TestPlugin.tp.coord:
         description: Teleport Player to x,y,z coordinate
         default: op
-    TestPlugin.who
+    TestPlugin.who:
         description: Displays Players that are online
         default: true
-    TestPlugin.whisper
+    TestPlugin.whisper:
         description: Allow Player to Whisper
         default: true
