@@ -4,6 +4,7 @@ v. 0.0.2
 Creating a Test Plugin for Bukkit Minecraft
 
 Commands:
+
     fly:
         description: Toggle Fly
         usage: "Usage: /fly [player]"
@@ -33,6 +34,7 @@ Commands:
         usage: "Usage: /w <player>"
         
 permissions:
+
     TestPlugin.*:
         description: Gives access to all TestPlugin commands
         children:
