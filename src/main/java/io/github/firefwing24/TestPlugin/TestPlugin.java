@@ -19,6 +19,7 @@ public final class TestPlugin extends JavaPlugin {
 	public void onEnable(){
 
 		this.getCommand("fly").setExecutor(new TestPluginCommandExecutor (this));
+		this.getCommand("heal").setExecutor(new TestPluginCommandExecutor (this));
 		this.getCommand("home").setExecutor(new TestPluginCommandExecutor (this));
 		this.getCommand("kill").setExecutor(new TestPluginCommandExecutor (this));
 		this.getCommand("sethome").setExecutor(new TestPluginCommandExecutor (this));

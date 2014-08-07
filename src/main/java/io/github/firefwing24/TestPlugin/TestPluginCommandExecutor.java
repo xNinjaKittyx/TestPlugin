@@ -124,6 +124,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 						if (!target2.isOnline()) {
 							sender.sendMessage(ChatColor.RED + args[1] + "is not Online!");
 						}
+						return false;
 					}
 					//TP arg1 to arg2
 				}
@@ -181,7 +182,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			Player target = player.getServer().getPlayer(args[0]);
 			if (!target.isOnline()) {
 				player.sendMessage(ChatColor.RED + args[0] + " is not online!");
-				return true;
+				return false;
 			} else if (target.isOnline()) {
 				
 				String message = StringUtils.join(args, ' ',1,args.length-1);
@@ -210,6 +211,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 				
 				if (target == null) {
 					sender.sendMessage(ChatColor.RED + args[0] + "is not online");
+					return false;
 				} else {
 					target.setHealth(0);
 				}
@@ -220,6 +222,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 					return false;
 				if (target == null) {
 					sender.sendMessage(ChatColor.RED + args[0] + "is not online");
+					return false;
 				} else {
 						
 					target.setHealth(0);
@@ -271,7 +274,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 				return false;
 			}
 			player.teleport(location);
-			player.sendMessage(ChatColor.GREEN + "Teleported to Home");
+			player.sendMessage(ChatColor.GREEN + "Teleported Home");
 			return true;
 		}
 		
@@ -317,7 +320,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 				Player target = player.getServer().getPlayer(args[0]);
 				if (target == null) {
 					sender.sendMessage(ChatColor.RED + args[0] + "is not online");
-					return true;
+					return false;
 				}
 				if (target.getAllowFlight()) {
 					target.setAllowFlight(false);
@@ -330,11 +333,50 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			}
 			
 			return false;
-				
-				
-				
 		}
 		
+		//HEAL COMMAND
+		if (cmd.getName().equalsIgnoreCase("heal")) {
+			if (args.length > 1) {
+				sender.sendMessage("Invalid Parameters!");
+				return false;
+			}
+			if (!(sender instanceof Player)) {
+				if (args.length == 0) {
+					sender.sendMessage("Can't Heal Non-Player!");
+					return false;
+				}
+				
+			} else {
+				if (args.length == 0) {
+					Player player = (Player) sender;
+					double health = player.getMaxHealth();
+					player.setHealth(health);
+					player.sendMessage(ChatColor.YELLOW + "Healed!");
+				}
+			}
+			
+			if (args.length == 1) {
+				Player target = Bukkit.getServer().getPlayer(args[1]);
+				if (target == null) {
+					if (!(sender instanceof Player))
+						sender.sendMessage(args[1] + "is not Online!");
+					else {
+						Player player = (Player) sender;
+						player.sendMessage(ChatColor.RED + args[1] + "is not Online!");
+					}
+						
+					return false;
+				}
+				
+				double health = target.getMaxHealth();
+				target.setHealth(health);
+				target.sendMessage(ChatColor.YELLOW + "Healed!");
+				return true;
+			} else 
+				return false;
+			
+		}
 		//args.length is number of arguments. args is an array :)
 		/*
 		 * if (arg.length > 4) would mean they gave more than 3 syntax stuff which autofails the command
