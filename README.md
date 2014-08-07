@@ -49,8 +49,8 @@ permissions:
     TestPlugin.fly:
         description: Give player all Fly Related permissions
         children:
-            TestPlugin.fly.me
-            TestPlugin.fly.others
+            TestPlugin.fly.me: true
+            TestPlugin.fly.others: true
     TestPlugin.fly.me:
         description: Allow player to toggle personal fly
         default: op
