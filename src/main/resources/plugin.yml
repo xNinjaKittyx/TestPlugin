@@ -5,19 +5,48 @@ description: TestPlugin
 
 version: 0.0.1
 commands:
+    home:
+        description: Spawn at home location
+        usage: /<command>
+    kill:
+        description: Kill a player.
+        usage /<command> <player>
+    sethome:
+        description: Set your home location
+        usage: /<command>
     test:
         description: Test if Plugin is working.
         usage: /<command>
     tp:
-        description: Teleport command
+        description: Teleport to someone or somewhere
         usage: "/<command> <arg1> [arg2] [arg3]"
+    who:
+        description: Show who's online
+        usage: /<command>
+    w:
+        description: Whisper to a player.
+        usage: /<command> <player> <message>
         
 permissions:
     TestPlugin.*:
         description: Gives access to all TestPlugin commands
         children:
+            TestPlugin.home: true
+            TestPlugin.kill: true
+            TestPlugin.sethome: true
             TestPlugin.test: true
             TestPlugin.tp: true
+            TestPlugin.who: true
+            TestPlugin.whisper: true
+    TestPlugin.home
+        description: Teleport to home
+        default: true
+    TestPlugin.kill
+        description: Permission to kill players by command.
+        default: op
+    TestPlugin.sethome
+        description: Permission to set home.
+        default: true
     TestPlugin.test:
         description: Test if plugin is working
         default: op
@@ -36,3 +65,9 @@ permissions:
     TestPlugin.tp.coord:
         description: Teleport Player to x,y,z coordinate
         default: op
+    TestPlugin.who
+        description: Displays Players that are online
+        default: true
+    TestPlugin.whisper
+        description: Allow Player to Whisper
+        default: true
