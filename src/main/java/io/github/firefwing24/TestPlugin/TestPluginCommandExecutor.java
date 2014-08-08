@@ -185,7 +185,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 				return false;
 			} else if (target.isOnline()) {
 				
-				String message = StringUtils.join(args, ' ',1,args.length-1);
+				String message = StringUtils.join(args, ' ',1,args.length);
 				
 				target.sendMessage(ChatColor.GRAY + "[Whisper: " +sender.getName() + "]: " + message);
 				return true;
@@ -305,7 +305,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 					player.sendMessage(ChatColor.AQUA + "Flying Disabled!");
 				} else {
 					player.setAllowFlight(true);
-					player.sendMessage(ChatColor.AQUA + "Flying Disabled!");
+					player.sendMessage(ChatColor.AQUA + "Flying Enabled!");
 				}
 				return true;
 			}
@@ -327,7 +327,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 					player.sendMessage(ChatColor.AQUA + "Flying Disabled!");
 				} else {
 					player.setAllowFlight(true);
-					player.sendMessage(ChatColor.AQUA + "Flying Disabled!");
+					player.sendMessage(ChatColor.AQUA + "Flying Enabled!");
 				}
 				return true;
 			}
@@ -353,17 +353,18 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 					double health = player.getMaxHealth();
 					player.setHealth(health);
 					player.sendMessage(ChatColor.YELLOW + "Healed!");
+					return true;
 				}
 			}
 			
 			if (args.length == 1) {
-				Player target = Bukkit.getServer().getPlayer(args[1]);
+				Player target = Bukkit.getServer().getPlayer(args[0]);
 				if (target == null) {
 					if (!(sender instanceof Player))
-						sender.sendMessage(args[1] + "is not Online!");
+						sender.sendMessage(args[0] + "is not Online!");
 					else {
 						Player player = (Player) sender;
-						player.sendMessage(ChatColor.RED + args[1] + "is not Online!");
+						player.sendMessage(ChatColor.RED + args[0] + "is not Online!");
 					}
 						
 					return false;
