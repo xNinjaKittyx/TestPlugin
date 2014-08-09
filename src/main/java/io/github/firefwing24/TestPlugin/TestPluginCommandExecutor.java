@@ -297,8 +297,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 					Player player = (Player) sender;
 					double health = player.getMaxHealth();
 					player.setHealth(health);
-					int hunger = player.getFoodLevel();
-					player.setFoodLevel(hunger);
+					player.setFoodLevel(20);
 					player.sendMessage(ChatColor.YELLOW + "Healed!");
 					return true;
 				}
@@ -318,8 +317,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 				}
 				
 				double health = target.getMaxHealth();
-				int hunger = target.getFoodLevel();
-				target.setFoodLevel(hunger);
+				target.setFoodLevel(20);
 				target.setHealth(health);
 				target.sendMessage(ChatColor.YELLOW + "Healed!");
 				return true;
