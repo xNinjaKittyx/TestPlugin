@@ -2,16 +2,20 @@ name: TestPlugin
 main: io.github.firefwing24.TestPlugin.TestPlugin
 author: xNinjaKittyx
 description: TestPlugin
+softdepend: [PermissionsEx]
 
 version: 0.0.2
 commands:
     broadcast:
         description: Broadcast a message to the server
-        usage: "Usage /broadcast [message]"
+        usage: "Usage: /broadcast [message]"
         aliases: say
     fly:
         description: Toggle Fly
         usage: "Usage: /fly [player]"
+    god:
+        description: Invinciblility Toggle
+        usage: "Usage: /fly <player>"
     heal:
         description: Heal player or yourself
         usage: "Usage: /heal [player]"
@@ -66,6 +70,17 @@ permissions:
         default: op
     TestPlugin.fly.others:
         description: Allow player to toggle other player's fly
+        default: op
+    TestPlugin.god:
+        description: Access to all god commands
+        children:
+            TestPlugin.god.me: true
+            TestPlugin.god.others: true
+    TestPlugin.god.me:
+        description: Toggle your /god
+        default: op
+    TestPlugin.god.others:
+        description: Toggle other player /god
         default: op
     TestPlugin.heal:
         desciption: Give all heal commands

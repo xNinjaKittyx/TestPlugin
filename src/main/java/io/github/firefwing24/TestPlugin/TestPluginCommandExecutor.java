@@ -14,7 +14,12 @@ import org.bukkit.entity.Player;
 
 public class TestPluginCommandExecutor implements CommandExecutor {
 	private final TestPlugin plugin;
+	private Teleportation tp = new Teleportation();
+
+	public static List<String> godToggleList = new ArrayList<String>();
+	
 	ArrayList <String> onlinePlayers = new ArrayList <String>();
+	
  
 	public TestPluginCommandExecutor(TestPlugin plugin) {
 		this.plugin = plugin; // Store the plugin in situations where you need it.
@@ -28,7 +33,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			
 			if (sender instanceof Player) {
 				Player player = (Player) sender;
-				if (player.hasPermission("TestPlugin.test") || player.isOp()) {
+				if (player.hasPermission("TestPlugin.test")) {
 					player.sendMessage(ChatColor.GREEN + "TestPlugin is working! Sent from Player");
 				}
 				else {
@@ -43,65 +48,19 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 		//TP COMMAND
 		if (cmd.getName().equalsIgnoreCase("tp")) { //example tp command
 			if (sender instanceof Player) {
-				Player player = (Player) sender;
 				if ((args.length < 1) || (args.length > 3)) {
 					sender.sendMessage(ChatColor.RED + "Invalid Arguments!");
 					return false;
 				}
-				if (args.length == 1) {
-					if (player.hasPermission("TestPlugin.tp.me")) {
-						Player targetPlayer = player.getServer().getPlayer(args[0]);
-						if (targetPlayer != null) {
-							Location location = targetPlayer.getLocation();
-							player.teleport(location);
-						} else {
-							player.sendMessage(ChatColor.RED + args[0] + " is not Online!");
-						}
-					}
-					else
-						sender.sendMessage(ChatColor.RED + "You don't have permission!");
-					//TP directly to argument player.
-					return true;
-				}
-				else if (args.length == 2) {
-					if (player.hasPermission("TestPlugin.tp.others")) {
-						Player target1 = player.getServer().getPlayer(args[0]);
-						Player target2 = player.getServer().getPlayer(args[1]);
-						if (target1 != null && target2 != null) {
-							Location location = target2.getLocation();
-							target1.teleport(location);
-							target1.sendMessage(ChatColor.YELLOW + "You have been teleported to " + target2.getDisplayName());
-						} else {
-							if (target1 == null) {
-								player.sendMessage(ChatColor.RED + args[0] + "is not Online!");
-							}
-							if (target2 == null) {
-								player.sendMessage(ChatColor.RED + args[1] + "is not Online!");
-							}
-						}
-					}
-					else
-						sender.sendMessage(ChatColor.RED + "You don't have permission!");
-					//TP from arg1 to arg2
-					return true;
-				}
+				if (args.length == 1) 
+					return tp.tpToPlayer(sender, cmd, label, args);
+				
+				
+				else if (args.length == 2)
+					return tp.tpP2P(sender, cmd, label, args);
+				
 				else if (args.length == 3) {
-					if (player.hasPermission("TestPlugin.tp.coord"))
-					{
-						try {
-							final double x = Double.parseDouble(args[0]);
-							final double y = Double.parseDouble(args[1]);
-							final double z = Double.parseDouble(args[2]);
-							Location location = new Location(player.getWorld(),x,y,z);
-							player.teleport(location);
-							//TP to coordinates (arg1,arg2,arg3)
-						}	catch (NumberFormatException ex) {
-							player.sendMessage(ChatColor.RED + "Invalid Location");
-						}
-					}
-					else
-						sender.sendMessage(ChatColor.RED + "You don't have permission!");
-					return true;
+					return tp.tpToCoord(sender, cmd, label, args);
 				}
 				else
 					return false;
@@ -109,61 +68,19 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			}
 			
 			else {
-				if (args.length == 2) {
-					
-					Player target1 = sender.getServer().getPlayer(args[0]);
-					Player target2 = sender.getServer().getPlayer(args[1]);
-					if (target1.isOnline() && target2.isOnline()) {
-						Location location = target2.getLocation();
-						target1.teleport(location);
-						target1.sendMessage(ChatColor.YELLOW + "You have been teleported to " + target2.getDisplayName());
-					} else {
-						if (target1 == null) {
-							sender.sendMessage(ChatColor.RED + args[0] + "is not Online!");
-						}
-						if (target2 == null) {
-							sender.sendMessage(ChatColor.RED + args[1] + "is not Online!");
-						}
-						return false;
-					}
-					//TP arg1 to arg2
-				}
-				else {
+				if (args.length == 2)
+					return tp.tpP2P(sender, cmd, label, args);
+				
+				else 
 					//Not usuable by console.
 					sender.sendMessage("You can only use Player to Player teleportation!");
-				}
 			}
 			return false;
 		}
 		
 		//TPHERE COMMAND
-		if (cmd.getName().equalsIgnoreCase("tphere")) {
-			if (!(sender instanceof Player)) {
-				sender.sendMessage("Cannot be used by non-player");
-				return true;
-			}
-			Player player = (Player) sender;
-			if (!player.hasPermission("TestPlugin.tphere")) {
-				sender.sendMessage(ChatColor.RED + "You don't have permission!");
-				return true;
-			}
-			
-			if (args.length == 1) {
-				Player bringTarget = player.getServer().getPlayer(args[0]);
-				if (bringTarget == null) {
-					player.sendMessage(ChatColor.RED + args[0] + "is not Online!");
-					return false;
-				} else {
-					Location location = player.getLocation();
-					bringTarget.teleport(location);
-					return true;
-				}
-				
-			} else {
-				sender.sendMessage(ChatColor.RED + "Invalid Arguments!");
-				return false;
-			}
-		}
+		if (cmd.getName().equalsIgnoreCase("tphere"))
+			return tp.tpHere(sender, cmd, label, args);
 		
 		
 		//WHO COMMAND
@@ -211,7 +128,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			
 			Player target = player.getServer().getPlayer(args[0]);
 			if (target == null) {
-				player.sendMessage(ChatColor.RED + args[0] + " is not online!");
+				player.sendMessage(ChatColor.RED + args[0] + "is not online or doesn't exist!");
 				return false;
 			} else {
 				
@@ -238,7 +155,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 					return false;
 				
 				if (target == null) {
-					sender.sendMessage(ChatColor.RED + args[0] + "is not online");
+					player.sendMessage(ChatColor.RED + args[0] + "is not online or doesn't exist!");
 					return false;
 				} else {
 					target.setHealth(0);
@@ -249,7 +166,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 				if (args.length < 1)
 					return false;
 				if (target == null) {
-					sender.sendMessage(ChatColor.RED + args[0] + "is not online");
+					sender.sendMessage(ChatColor.RED + args[0] + "is not online or doesn't exist!");
 					return false;
 				} else {
 						
@@ -394,7 +311,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 						sender.sendMessage(args[0] + "is not Online!");
 					else {
 						Player player = (Player) sender;
-						player.sendMessage(ChatColor.RED + args[0] + "is not Online!");
+						player.sendMessage(ChatColor.RED + args[0] + "is not online or doesn't exist!");
 					}
 						
 					return false;
@@ -414,14 +331,70 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 		
 		//BROADCAST COMMAND
 		if (cmd.getName().equalsIgnoreCase("broadcast")) {
-			if (sender.hasPermission("TestPlugin.broadcast")) {
+			if (!sender.hasPermission("TestPlugin.broadcast")) {
 				sender.sendMessage(ChatColor.RED + "You don't have permission!");
 				return true;
 			}
+			if (args.length == 0)
+				return false;
 			String message = StringUtils.join(args, " ", 1, args.length);
 			Bukkit.broadcastMessage(message);
+			return true;
 		}
 		
+		//GOD COMMAND
+		if (cmd.getName().equalsIgnoreCase("god")) {
+
+			if (!(sender instanceof Player)) {
+				sender.sendMessage("Cannot be used by non-player");
+				return true;
+			}
+			
+			Player player = (Player) sender;
+			if (args.length == 0) {
+				if (!sender.hasPermission("TestPlugin.god.me")) {
+					sender.sendMessage(ChatColor.RED + "You don't have permission!");
+					return true;
+				}
+				if (!(godToggleList.contains(player.getName()))) {
+					godToggleList.add(player.getName());
+					player.sendMessage(ChatColor.GREEN + "Godmode Enabled!");
+				} else {
+					godToggleList.remove(player.getName());
+					player.sendMessage(ChatColor.GREEN + "Godmode Disabled!");
+				}
+				return true;
+			}
+			
+			else if (args.length == 1) {
+				if (!sender.hasPermission("TestPlugin.god.others")) {
+					sender.sendMessage(ChatColor.RED + "You don't have permission!");
+					return true;
+				}
+				Player target = player.getServer().getPlayer(args[0]);
+				if (target == null) {
+					player.sendMessage(ChatColor.RED + args[0] + "is not online or doesn't exist!");
+					return false;
+				} else {
+
+					if (!(godToggleList.contains(target.getName()))) {
+						godToggleList.add(target.getName());
+						player.sendMessage(ChatColor.GREEN + "Godmode Enabled!");
+					} else {
+						godToggleList.remove(target.getName());
+						player.sendMessage(ChatColor.GREEN + "Godmode Disabled!");
+					}
+					return true;
+				}
+				
+			}
+			
+			else {
+				player.sendMessage(ChatColor.RED + "Invalid Parameters");
+				return false;
+			}
+			
+		}
 		
 		
 		//
@@ -432,7 +405,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 		 * 
 		 */
 		
-		
+		sender.sendMessage("Something went wrong with the command. This message means that there's a boolean leak in the command.");
 		return false;
 	}
 }
