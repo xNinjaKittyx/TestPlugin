@@ -51,7 +51,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 				if (args.length == 1) {
 					if (player.hasPermission("TestPlugin.tp.me")) {
 						Player targetPlayer = player.getServer().getPlayer(args[0]);
-						if (targetPlayer.isOnline()) {
+						if (targetPlayer != null) {
 							Location location = targetPlayer.getLocation();
 							player.teleport(location);
 						} else {
@@ -67,15 +67,15 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 					if (player.hasPermission("TestPlugin.tp.others")) {
 						Player target1 = player.getServer().getPlayer(args[0]);
 						Player target2 = player.getServer().getPlayer(args[1]);
-						if (target1.isOnline() && target2.isOnline()) {
+						if (target1 != null && target2 != null) {
 							Location location = target2.getLocation();
 							target1.teleport(location);
 							target1.sendMessage(ChatColor.YELLOW + "You have been teleported to " + target2.getDisplayName());
 						} else {
-							if (!target1.isOnline()) {
+							if (target1 == null) {
 								player.sendMessage(ChatColor.RED + args[0] + "is not Online!");
 							}
-							if (!target2.isOnline()) {
+							if (target2 == null) {
 								player.sendMessage(ChatColor.RED + args[1] + "is not Online!");
 							}
 						}
@@ -118,10 +118,10 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 						target1.teleport(location);
 						target1.sendMessage(ChatColor.YELLOW + "You have been teleported to " + target2.getDisplayName());
 					} else {
-						if (!target1.isOnline()) {
+						if (target1 == null) {
 							sender.sendMessage(ChatColor.RED + args[0] + "is not Online!");
 						}
-						if (!target2.isOnline()) {
+						if (target2 == null) {
 							sender.sendMessage(ChatColor.RED + args[1] + "is not Online!");
 						}
 						return false;
@@ -135,6 +135,36 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			}
 			return false;
 		}
+		
+		//TPHERE COMMAND
+		if (cmd.getName().equalsIgnoreCase("tphere")) {
+			if (!(sender instanceof Player)) {
+				sender.sendMessage("Cannot be used by non-player");
+				return true;
+			}
+			Player player = (Player) sender;
+			if (!player.hasPermission("TestPlugin.tphere")) {
+				sender.sendMessage(ChatColor.RED + "You don't have permission!");
+				return true;
+			}
+			
+			if (args.length == 1) {
+				Player bringTarget = player.getServer().getPlayer(args[0]);
+				if (bringTarget == null) {
+					player.sendMessage(ChatColor.RED + args[0] + "is not Online!");
+					return false;
+				} else {
+					Location location = player.getLocation();
+					bringTarget.teleport(location);
+					return true;
+				}
+				
+			} else {
+				sender.sendMessage(ChatColor.RED + "Invalid Arguments!");
+				return false;
+			}
+		}
+		
 		
 		//WHO COMMAND
 		if (cmd.getName().equalsIgnoreCase("who")) {
@@ -180,18 +210,16 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			}
 			
 			Player target = player.getServer().getPlayer(args[0]);
-			if (!target.isOnline()) {
+			if (target == null) {
 				player.sendMessage(ChatColor.RED + args[0] + " is not online!");
 				return false;
-			} else if (target.isOnline()) {
+			} else {
 				
 				String message = StringUtils.join(args, ' ',1,args.length);
 				
 				target.sendMessage(ChatColor.GRAY + "[Whisper: " +sender.getName() + "]: " + message);
 				return true;
 			}
-			else
-				return false;
 			
 		}
 		
@@ -352,6 +380,8 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 					Player player = (Player) sender;
 					double health = player.getMaxHealth();
 					player.setHealth(health);
+					int hunger = player.getFoodLevel();
+					player.setFoodLevel(hunger);
 					player.sendMessage(ChatColor.YELLOW + "Healed!");
 					return true;
 				}
@@ -371,6 +401,8 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 				}
 				
 				double health = target.getMaxHealth();
+				int hunger = target.getFoodLevel();
+				target.setFoodLevel(hunger);
 				target.setHealth(health);
 				target.sendMessage(ChatColor.YELLOW + "Healed!");
 				return true;
@@ -378,6 +410,21 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 				return false;
 			
 		}
+		
+		
+		//BROADCAST COMMAND
+		if (cmd.getName().equalsIgnoreCase("broadcast")) {
+			if (sender.hasPermission("TestPlugin.broadcast")) {
+				sender.sendMessage(ChatColor.RED + "You don't have permission!");
+				return true;
+			}
+			String message = StringUtils.join(args, " ", 1, args.length);
+			Bukkit.broadcastMessage(message);
+		}
+		
+		
+		
+		//
 		//args.length is number of arguments. args is an array :)
 		/*
 		 * if (arg.length > 4) would mean they gave more than 3 syntax stuff which autofails the command
