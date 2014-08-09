@@ -5,9 +5,16 @@ Creating a Test Plugin for Bukkit Minecraft
 
 Commands:
 
+    broadcast:
+        description: Broadcast a message to the server
+        usage: "Usage: /broadcast [message]"
+        aliases: say
     fly:
         description: Toggle Fly
         usage: "Usage: /fly [player]"
+    god:
+        description: Invinciblility Toggle
+        usage: "Usage: /fly <player>"
     heal:
         description: Heal player or yourself
         usage: "Usage: /heal [player]"
@@ -26,6 +33,9 @@ Commands:
     tp:
         description: Teleport to someone or somewhere
         usage: "Usage: /tp <player> || <player1> <player2> || <x> <y> <z>"
+    tphere:
+        description: Teleport a player to your location
+        usage: "Usage: /tphere <player>"
     who:
         description: Show who's online
         usage: "Usage: /who"
@@ -38,6 +48,7 @@ permissions:
     TestPlugin.*:
         description: Gives access to all TestPlugin commands
         children:
+            TestPlugin.broadcast: true
             TestPlugin.fly: true
             TestPlugin.home: true
             TestPlugin.kill: true
@@ -46,6 +57,9 @@ permissions:
             TestPlugin.tp: true
             TestPlugin.who: true
             TestPlugin.whisper: true
+    TestPlugin.broadcast:
+        description: Broadcast a message to the server
+        default: op
     TestPlugin.fly:
         description: Give player all Fly Related permissions
         children:
@@ -56,6 +70,17 @@ permissions:
         default: op
     TestPlugin.fly.others:
         description: Allow player to toggle other player's fly
+        default: op
+    TestPlugin.god:
+        description: Access to all god commands
+        children:
+            TestPlugin.god.me: true
+            TestPlugin.god.others: true
+    TestPlugin.god.me:
+        description: Toggle your /god
+        default: op
+    TestPlugin.god.others:
+        description: Toggle other player /god
         default: op
     TestPlugin.heal:
         desciption: Give all heal commands
@@ -86,6 +111,7 @@ permissions:
             TestPlugin.tp.me: true
             TestPlugin.tp.others: true
             TestPlugin.tp.coord: true
+            TestPlugin.tphere: true
     TestPlugin.tp.me:
         description: Teleport yourself to a player
         default: op
@@ -94,6 +120,9 @@ permissions:
         default: op
     TestPlugin.tp.coord:
         description: Teleport Player to x,y,z coordinate
+        default: op
+    TestPlugin.tphere:
+        description: Teleport Player to your location
         default: op
     TestPlugin.who:
         description: Displays Players that are online
