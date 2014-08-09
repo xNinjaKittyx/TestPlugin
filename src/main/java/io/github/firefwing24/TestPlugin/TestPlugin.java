@@ -3,7 +3,6 @@ package io.github.firefwing24.TestPlugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-
 public final class TestPlugin extends JavaPlugin {
 
 	public static TestPlugin plugin;
@@ -44,5 +43,4 @@ public final class TestPlugin extends JavaPlugin {
 	public void LoadConfig() {
 		
 	}
-
 }
