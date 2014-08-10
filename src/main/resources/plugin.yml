@@ -4,7 +4,7 @@ author: xNinjaKittyx
 description: TestPlugin
 softdepend: [PermissionsEx, Vault]
 
-version: 0.0.2
+version: 0.0.3
 commands:
     broadcast:
         description: Broadcast a message to the server

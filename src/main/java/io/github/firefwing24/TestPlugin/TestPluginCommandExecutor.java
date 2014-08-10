@@ -294,6 +294,10 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 				
 			} else {
 				if (args.length == 0) {
+					if (!sender.hasPermission("TestPlugin.heal.me")) {
+						sender.sendMessage(ChatColor.RED + "You don't have permission!");
+						return true;
+					}
 					Player player = (Player) sender;
 					double health = player.getMaxHealth();
 					player.setHealth(health);
@@ -304,6 +308,10 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			}
 			
 			if (args.length == 1) {
+				if (!sender.hasPermission("TestPlugin.heal.others")) {
+					sender.sendMessage(ChatColor.RED + "You don't have permission!");
+					return true;
+				}
 				Player target = Bukkit.getServer().getPlayer(args[0]);
 				if (target == null) {
 					if (!(sender instanceof Player))
