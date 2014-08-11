@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 public class TestPluginCommandExecutor implements CommandExecutor {
 	private final TestPlugin plugin;
 	private Teleportation tp = new Teleportation();
+	private UserManagement um = new UserManagement();
+	private PEXRankCheck rc = new PEXRankCheck();
 
 	public static List<String> godToggleList = new ArrayList<String>();
 	
@@ -158,6 +160,11 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 					player.sendMessage(ChatColor.RED + args[0] + "is not online or doesn't exist!");
 					return false;
 				} else {
+
+					if (rc.isLess(player, target) && TestPlugin.pex) {
+						sender.sendMessage(ChatColor.RED + "You can't kill a player higher rank than you!");
+						return true;
+					}
 					target.setHealth(0);
 				}
 				return true;
@@ -400,6 +407,12 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 				return false;
 			}
 			
+			
+		}
+		
+		//KICK COMMAND
+		if(cmd.getName().equalsIgnoreCase("kick")) {
+			return um.kick(sender, cmd, label, args);
 		}
 		
 		

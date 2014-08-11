@@ -8,12 +8,15 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import ru.tehkode.permissions.bukkit.PermissionsEx;
+
 public final class TestPlugin extends JavaPlugin {
 
 	public static TestPlugin plugin;
     public static Economy econ = null;
     public static Permission perms = null;
     public static Chat chat = null;
+    public static boolean pex;
 	
 	public TestPlugin() {
 		// TODO Auto-generated constructor stub
@@ -38,7 +41,7 @@ public final class TestPlugin extends JavaPlugin {
         setupPermissions();
         setupChat();
 		
-        
+        pex = isPexOn();
         
 		this.getCommand("broadcast").setExecutor(new TestPluginCommandExecutor (this));
 		this.getCommand("fly").setExecutor(new TestPluginCommandExecutor (this));
@@ -85,5 +88,13 @@ public final class TestPlugin extends JavaPlugin {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
         perms = rsp.getProvider();
         return perms != null;
+    }
+    
+    private boolean isPexOn() {
+    	if (getServer().getPluginManager().getPlugin("PermissionsEx") != null)
+    		return true;
+    	else
+    		return false;
+    		
     }
 }

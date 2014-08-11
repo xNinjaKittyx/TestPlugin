@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 public class Teleportation {
 
+	private PEXRankCheck rc = new PEXRankCheck();
 	
 	public Teleportation() {
 		// TODO Auto-generated constructor stub
@@ -37,6 +38,11 @@ public class Teleportation {
 		Player player = (Player) sender;
 		Player target1 = player.getServer().getPlayer(args[0]);
 		Player target2 = player.getServer().getPlayer(args[1]);
+		//If you try to change the location of a higher ranking.
+		if (rc.isLess(player, target1) && TestPlugin.pex) {
+			sender.sendMessage(ChatColor.RED + "You can't TP a player with a higher rank than you!");
+			return true;
+		}
 		if (target1 != null && target2 != null) {
 			Location location = target2.getLocation();
 			target1.teleport(location);
@@ -85,11 +91,19 @@ public class Teleportation {
 			return true;
 		}
 		
+		
+		
 		if (args.length == 1) {
 			Player bringTarget = player.getServer().getPlayer(args[0]);
 			if (bringTarget == null) {
 				player.sendMessage(ChatColor.RED + args[0] + "is not Online!");
 				return false;
+			}
+			
+			//If you try to change the location of a higher ranking.
+			if (rc.isLess(player, bringTarget) && TestPlugin.pex) {
+				sender.sendMessage(ChatColor.RED + "You can't TP a player with a higher rank than you!");
+				return true;
 			}
 				
 			Location location = player.getLocation();

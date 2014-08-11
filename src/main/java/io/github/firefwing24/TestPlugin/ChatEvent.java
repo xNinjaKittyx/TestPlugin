@@ -1,6 +1,8 @@
 package io.github.firefwing24.TestPlugin;
 
 
+import java.util.regex.Pattern;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,6 +14,14 @@ import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class ChatEvent implements Listener{
+	protected static Pattern chatColorPattern = Pattern.compile("(?i)&([0-9A-F])");
+	protected static Pattern chatMagicPattern = Pattern.compile("(?i)&([K])");
+	protected static Pattern chatBoldPattern = Pattern.compile("(?i)&([L])");
+	protected static Pattern chatStrikethroughPattern = Pattern.compile("(?i)&([M])");
+	protected static Pattern chatUnderlinePattern = Pattern.compile("(?i)&([N])");
+	protected static Pattern chatItalicPattern = Pattern.compile("(?i)&([O])");
+	protected static Pattern chatResetPattern = Pattern.compile("(?i)&([R])");
+	
 	public ChatEvent(TestPlugin plugin) { 
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
@@ -22,27 +32,50 @@ public class ChatEvent implements Listener{
 		if (e.isCancelled()) {
 			return;
 		}
-		
+
 		Player player = e.getPlayer();
 		
-		String WorldName = player.getWorld().getName();
+		
 		PermissionUser user = PermissionsEx.getPermissionManager().getUser(player);
 		
 		if (user == null)
 			return;
 		
 		String message = e.getMessage();
-		String format = "%prefix%name%suffix: %message";
-		format.replace("%prefix",user.getPrefix(WorldName));
-		format.replace("%suffix",user.getSuffix(WorldName));
-		format.replace("%name", "%1$s");
-		format.replace("%message", "%2$s");
+		String format = "%prefix%name%suffix" + ChatColor.WHITE + ": %message";
 		
-		e.setFormat(format);
-		e.setMessage(message);
+		String newFormat = this.replaceFormat(player, format);
 		
-		//e.setFormat(ChatColor.WHITE + "<" + prefix + "%1$s" + suffix + ChatColor.WHITE + "> %2$s");
+		String newMessage = this.translateColorCodes(message);
+		String newFormat2 = this.translateColorCodes(newFormat);
+		
+		e.setFormat(newFormat2);
+		e.setMessage(newMessage);
 		
 		
+	}
+	
+	public String replaceFormat(Player player, String format) {
+		String prefix = PermissionsEx.getUser(player).getGroups()[0].getPrefix();
+		String suffix = PermissionsEx.getUser(player).getGroups()[0].getSuffix();
+		return format.replace("%prefix",prefix).replace("%suffix",suffix).replace("%name", "%1$s").replace("%message", "%2$s");
+	}
+	
+
+	
+	protected String translateColorCodes(String string) {
+		if (string == null) {
+			return "";
+		}
+
+		String newstring = string;
+		newstring = chatColorPattern.matcher(newstring).replaceAll("\u00A7$1");
+		newstring = chatMagicPattern.matcher(newstring).replaceAll("\u00A7$1");
+		newstring = chatBoldPattern.matcher(newstring).replaceAll("\u00A7$1");
+		newstring = chatStrikethroughPattern.matcher(newstring).replaceAll("\u00A7$1");
+		newstring = chatUnderlinePattern.matcher(newstring).replaceAll("\u00A7$1");
+		newstring = chatItalicPattern.matcher(newstring).replaceAll("\u00A7$1");
+		newstring = chatResetPattern.matcher(newstring).replaceAll("\u00A7$1");
+		return newstring;
 	}
 }
