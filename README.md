@@ -1,7 +1,8 @@
 TestPlugin
 ==========
-v. 0.0.2
+v. 0.0.3
 Creating a Test Plugin for Bukkit Minecraft
+
 
 Commands:
 
@@ -21,6 +22,9 @@ Commands:
     home:
         description: Spawn at home location
         usage: "Usage: /home"
+    kick:
+        description: Kick a player
+        usage: "Usage: /kick <player> [reason]"
     kill:
         description: Kill a player.
         usage: "Usage: /kill <player>"
@@ -96,6 +100,9 @@ permissions:
     TestPlugin.home:
         description: Teleport to home
         default: true
+    TestPlugin.kick:
+        description: Kick player
+        default: op
     TestPlugin.kill:
         description: Permission to kill players by command.
         default: op
