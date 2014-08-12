@@ -9,10 +9,10 @@ public class PEXRankCheck {
 	public PEXRankCheck() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public boolean isGreater(Player player,Player target) {
-		//Returns true if and only if player's Rank is lower than target.
-		//If Ranks equal, return false;
+
+	public boolean isGreater(Player player, Player target) {
+		// Returns true if and only if player's Rank is lower than target.
+		// If Ranks equal, return false;
 		int playerRank = PermissionsEx.getUser(player).getGroups()[0].getRank();
 		int targetRank = PermissionsEx.getUser(player).getGroups()[0].getRank();
 		if (playerRank < targetRank)
@@ -20,10 +20,10 @@ public class PEXRankCheck {
 		else
 			return false;
 	}
-	
+
 	public boolean isLess(Player player, Player target) {
-		//Returns true if and only if player's Rank is lower than target.
-		//If Ranks Equal, return false;
+		// Returns true if and only if player's Rank is lower than target.
+		// If Ranks Equal, return false;
 		int playerRank = PermissionsEx.getUser(player).getGroups()[0].getRank();
 		int targetRank = PermissionsEx.getUser(player).getGroups()[0].getRank();
 		if (playerRank > targetRank)
@@ -31,9 +31,9 @@ public class PEXRankCheck {
 		else
 			return false;
 	}
-	
+
 	public boolean isEqual(Player player, Player target) {
-		//Returns true if and only if player's Rank is same as target.
+		// Returns true if and only if player's Rank is same as target.
 		int playerRank = PermissionsEx.getUser(player).getGroups()[0].getRank();
 		int targetRank = PermissionsEx.getUser(player).getGroups()[0].getRank();
 		if (playerRank == targetRank)

@@ -13,15 +13,20 @@ public class UserManagement {
 	public UserManagement() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public boolean kick(CommandSender sender, Command cmd, String label, String[] args) {
+
+	public boolean kick(CommandSender sender, Command cmd, String label,
+			String[] args) {
+		if (!sender.hasPermission("TestPlugin.kick")) {
+			sender.sendMessage(ChatColor.RED + "You don't have permission!");
+			return true;
+		}
 		if (args.length == 0) {
 			sender.sendMessage(ChatColor.RED + "Invalid Arguments");
 			return false;
 		}
-		
+
 		else {
-			
+
 			Player playerToKick = Bukkit.getServer().getPlayerExact(args[0]);
 			if (playerToKick == null) {
 				sender.sendMessage(ChatColor.RED + args[0] + " is not Online!");
@@ -29,31 +34,35 @@ public class UserManagement {
 			}
 			if (sender instanceof Player) {
 				Player player = (Player) sender;
-				//If you try to change the location of a higher ranking.
+				// If you try to change the location of a higher ranking.
 				if (rc.isLess(player, playerToKick) && TestPlugin.pex) {
-					sender.sendMessage(ChatColor.RED + "You can't kick a player higher rank than you!");
+					sender.sendMessage(ChatColor.RED
+							+ "You can't kick a player higher rank than you!");
 					return true;
 				}
 			}
-			
+
 			playerToKick.kickPlayer("You have been kicked.");
-			Command.broadcastCommandMessage(sender, ChatColor.GRAY + playerToKick.getName() + " has been kicked!");
-			
-			
+			Command.broadcastCommandMessage(sender, ChatColor.GRAY
+					+ playerToKick.getName() + " has been kicked!");
+
 		}
 		return true;
 	}
-	
-	public boolean ban(CommandSender sender, Command cmd, String label, String[] args) {
+
+	public boolean ban(CommandSender sender, Command cmd, String label,
+			String[] args) {
 		return true;
 	}
-	
-	public boolean unban(CommandSender sender, Command cmd, String label, String[] args) {
+
+	public boolean unban(CommandSender sender, Command cmd, String label,
+			String[] args) {
 		return true;
 	}
-	
-	public boolean banlist(CommandSender sender, Command cmd, String label, String[] args) {
+
+	public boolean banlist(CommandSender sender, Command cmd, String label,
+			String[] args) {
 		return true;
 	}
-	
+
 }

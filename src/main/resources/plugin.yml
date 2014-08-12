@@ -31,9 +31,9 @@ commands:
     sethome:
         description: Set your home location
         usage: "Usage: /kill <player>"
-    test:
-        description: Test if Plugin is working.
-        usage: "Usage: /test"
+    TestP:
+        description: Different TestPlugin Commands
+        usage: "Usage: /testp <args1> :"
     tp:
         description: Teleport to someone or somewhere
         usage: "Usage: /tp <player> || <player1> <player2> || <x> <y> <z>"
@@ -108,9 +108,6 @@ permissions:
     TestPlugin.sethome:
         description: Permission to set home.
         default: true
-    TestPlugin.test:
-        description: Test if plugin is working
-        default: op
     TestPlugin.tp:
         description: Gives access to all TP commands
         children:
