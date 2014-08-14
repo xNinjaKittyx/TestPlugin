@@ -337,7 +337,8 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			if (args.length == 0)
 				return false;
 			String message = StringUtils.join(args, " ", 0, args.length);
-			Bukkit.broadcastMessage(message);
+			String newMessage = ChatColor.translateAlternateColorCodes('&', message);
+			Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[CONSOLE]: " + ChatColor.RESET + newMessage);
 			return true;
 		}
 
