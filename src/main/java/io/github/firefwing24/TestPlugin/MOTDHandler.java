@@ -48,8 +48,8 @@ public class MOTDHandler implements Listener {
 				.getPrefix();
 		String suffix = PermissionsEx.getUser(player).getGroups()[0]
 				.getSuffix();
-		String message = ChatColor.GRAY + prefix + player.getDisplayName()
-				+ suffix + " has left the server.";
+		String message = prefix + player.getDisplayName()
+				+ suffix + ChatColor.GRAY + " has left the server.";
 		String newMessage = this.translateColorCodes(message);
 		e.setQuitMessage(null);
 		Bukkit.broadcastMessage(newMessage);

@@ -75,8 +75,9 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 					for (Player p : Bukkit.getOnlinePlayers()) {
 						onlinePlayers.add(p.getName());
 					}
+					String players = StringUtils.join(onlinePlayers.toArray(), ' ', 1, args.length);
 					player.sendMessage(ChatColor.YELLOW + "Online Players: "
-							+ ChatColor.WHITE + onlinePlayers.toString());
+							+ ChatColor.WHITE + players);
 					onlinePlayers.clear();
 				}
 			} else {

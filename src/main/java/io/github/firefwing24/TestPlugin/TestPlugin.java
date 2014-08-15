@@ -33,7 +33,6 @@ public final class TestPlugin extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		LoadConfig();
 		
 		new MOTDHandler(this);
 		new ChatEvent(this);
@@ -64,8 +63,8 @@ public final class TestPlugin extends JavaPlugin {
 				.setExecutor(new TestPluginCommandExecutor(this));
 		this.getCommand("sethome").setExecutor(
 				new TestPluginCommandExecutor(this));
-		this.getCommand("TestPlugin")
-				.setExecutor(new TestPluginCommandExecutor(this));
+		//this.getCommand("TestP")
+		//		.setExecutor(new TestPluginCommandExecutor(this));
 		this.getCommand("tp").setExecutor(new TestPluginCommandExecutor(this));
 		this.getCommand("tphere").setExecutor(
 				new TestPluginCommandExecutor(this));
