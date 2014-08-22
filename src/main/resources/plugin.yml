@@ -28,6 +28,9 @@ commands:
     kill:
         description: Kill a player.
         usage: "Usage: /kill <player>"
+    repair:
+        description: Repair an item in hand.
+        usage: "Usage: /repair"
     sethome:
         description: Set your home location
         usage: "Usage: /kill <player>"
@@ -37,6 +40,15 @@ commands:
     tp:
         description: Teleport to someone or somewhere
         usage: "Usage: /tp <player> || <player1> <player2> || <x> <y> <z>"
+    tpa:
+        description: Request a tp to a player.
+        usage: "Usage: /tpa <player>"
+    tpaccept:
+        description: Accept a request
+        usage: "Usage: /tpaccept"
+    tpdeny:
+        description: Repair an item in hand.
+        usage: "Usage: /tpdeny="
     tphere:
         description: Teleport a player to your location
         usage: "Usage: /tphere <player>"
@@ -105,6 +117,9 @@ permissions:
     TestPlugin.kill:
         description: Permission to kill players by command.
         default: op
+    TestPlugin.repair:
+        description: Repair items.
+        default: op
     TestPlugin.sethome:
         description: Permission to set home.
         default: true
@@ -115,6 +130,7 @@ permissions:
             TestPlugin.tp.others: true
             TestPlugin.tp.coord: true
             TestPlugin.tphere: true
+            TestPlugin.tpa: true
     TestPlugin.tp.me:
         description: Teleport yourself to a player
         default: op
@@ -123,6 +139,9 @@ permissions:
         default: op
     TestPlugin.tp.coord:
         description: Teleport Player to x,y,z coordinate
+        default: op
+    TestPlugin.tpa:
+        description: Ask player if you can teleport.
         default: op
     TestPlugin.tphere:
         description: Teleport Player to your location

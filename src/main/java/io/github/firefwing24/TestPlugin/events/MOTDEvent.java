@@ -1,4 +1,6 @@
-package io.github.firefwing24.TestPlugin;
+package io.github.firefwing24.TestPlugin.events;
+
+import io.github.firefwing24.TestPlugin.TestPlugin;
 
 import java.util.regex.Pattern;
 
@@ -13,7 +15,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
-public class MOTDHandler implements Listener {
+public class MOTDEvent implements Listener {
 	protected static Pattern chatColorPattern = Pattern.compile("(?i)&([0-9A-F])");
 	protected static Pattern chatMagicPattern = Pattern.compile("(?i)&([K])");
 	protected static Pattern chatBoldPattern = Pattern.compile("(?i)&([L])");
@@ -22,7 +24,7 @@ public class MOTDHandler implements Listener {
 	protected static Pattern chatItalicPattern = Pattern.compile("(?i)&([O])");
 	protected static Pattern chatResetPattern = Pattern.compile("(?i)&([R])");
 
-	public MOTDHandler(TestPlugin plugin) {
+	public MOTDEvent(TestPlugin plugin) {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 

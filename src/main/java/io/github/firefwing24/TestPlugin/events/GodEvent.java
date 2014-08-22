@@ -1,4 +1,7 @@
-package io.github.firefwing24.TestPlugin;
+package io.github.firefwing24.TestPlugin.events;
+
+import io.github.firefwing24.TestPlugin.TestPlugin;
+import io.github.firefwing24.TestPlugin.commands.CommandGod;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -8,7 +11,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public class GodEvent implements Listener {
 
-	TestPluginCommandExecutor p;
+	private CommandGod god = new CommandGod();
 
 	public GodEvent(TestPlugin plugin) {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -19,7 +22,7 @@ public class GodEvent implements Listener {
 		Entity ent = e.getEntity();
 
 		if (ent instanceof Player) {
-			if (TestPluginCommandExecutor.godToggleList.contains(((Player) ent)
+			if (god.godToggleList.contains(((Player) ent)
 					.getName()))
 				e.setCancelled(true);
 		} else {

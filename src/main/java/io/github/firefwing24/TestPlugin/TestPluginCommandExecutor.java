@@ -1,36 +1,34 @@
 package io.github.firefwing24.TestPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.github.firefwing24.TestPlugin.commands.*;
 
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class TestPluginCommandExecutor implements CommandExecutor {
 	private final TestPlugin plugin;
-	private Teleportation tp = new Teleportation();
+	private CommandTP tp = new CommandTP();
 	private UserManagement um = new UserManagement();
-	private PEXRankCheck rc = new PEXRankCheck();
 	private TestPcmd tpc = new TestPcmd();
-
-	public static List<String> godToggleList = new ArrayList<String>();
-
-	ArrayList<String> onlinePlayers = new ArrayList<String>();
-
+	private CommandKill kill = new CommandKill();
+	private CommandHome home = new CommandHome();
+	private CommandChat chat = new CommandChat();
+	private CommandFly fly = new CommandFly();
+	private CommandHeal heal = new CommandHeal();
+	private CommandGod god = new CommandGod();
+	private CommandBroadcast broadcast = new CommandBroadcast();
+	
 	public TestPluginCommandExecutor(TestPlugin plugin) {
 		this.plugin = plugin; // Store the plugin in situations where you need
 								// it.
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label,
-			String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		// TP COMMAND
 		if (cmd.getName().equalsIgnoreCase("tp")) { // example tp command
@@ -64,350 +62,61 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 		}
 
 		// TPHERE COMMAND
-		if (cmd.getName().equalsIgnoreCase("tphere"))
+		else if (cmd.getName().equalsIgnoreCase("tphere"))
 			return tp.tpHere(sender, cmd, label, args);
+		
+		//TPA COMMANDS
+		else if (cmd.getName().equalsIgnoreCase("tpa"))
+			return tp.tpa(sender, cmd, label, args);
+		
+		else if (cmd.getName().equalsIgnoreCase("tpaccept"))
+			return tp.tpaccept(sender, cmd, label, args);
+		
+		else if (cmd.getName().equalsIgnoreCase("tpdeny"))
+			return tp.tpdeny(sender, cmd, label, args);
 
 		// WHO COMMAND
-		if (cmd.getName().equalsIgnoreCase("who")) {
-			if (sender instanceof Player) {
-				Player player = (Player) sender;
-				if (player.hasPermission("TestPlugin.who")) {
-					for (Player p : Bukkit.getOnlinePlayers()) {
-						onlinePlayers.add(p.getName());
-					}
-					String players = StringUtils.join(onlinePlayers.toArray(), ' ', 1, args.length);
-					player.sendMessage(ChatColor.YELLOW + "Online Players: "
-							+ ChatColor.WHITE + players);
-					onlinePlayers.clear();
-				}
-			} else {
-				for (Player p : Bukkit.getOnlinePlayers()) {
-					onlinePlayers.add(p.getName());
-				}
-				sender.sendMessage(ChatColor.YELLOW + "Online Players: "
-						+ ChatColor.WHITE + onlinePlayers.toString());
-				onlinePlayers.clear();
-			}
-			return true;
-		}
+		else if (cmd.getName().equalsIgnoreCase("who"))
+			return um.who(sender, cmd, label, args);
 
-		// Whisper Command
+		// WHISPER COMMAND
+		else if (cmd.getName().equalsIgnoreCase("w"))
+			return chat.whisper(sender, cmd, label, args);
 
-		if (cmd.getName().equalsIgnoreCase("w")) {
-			if (!sender.hasPermission("TestPlugin.whisper")) {
-				sender.sendMessage(ChatColor.RED + "You don't have permission!");
-				return true;
-			}
+		// KILL COMMAND
+		else if (cmd.getName().equalsIgnoreCase("kill")) 
+			return kill.kill(sender, cmd, label, args);
 
-			if (!(sender instanceof Player)) {
-				sender.sendMessage("This can only be used by in-game Players");
-				return true;
-			}
-
-			Player player = (Player) sender;
-			if (args.length < 2) {
-				return false;
-			}
-
-			Player target = player.getServer().getPlayer(args[0]);
-			if (target == null) {
-				player.sendMessage(ChatColor.RED + args[0]
-						+ "is not online or doesn't exist!");
-				return false;
-			} else {
-
-				String message = StringUtils.join(args, ' ', 1, args.length);
-
-				target.sendMessage(ChatColor.GRAY + "[Whisper: "
-						+ sender.getName() + "]: " + message);
-				return true;
-			}
-
-		}
-
-		// Kill Command
-		if (cmd.getName().equalsIgnoreCase("kill")) {
-			if (!sender.hasPermission("TestPlugin.kill")) {
-				sender.sendMessage(ChatColor.RED + "You don't have permission!");
-				return true;
-			}
-
-			if (sender instanceof Player) {
-				Player player = (Player) sender;
-
-				Player target = player.getServer().getPlayer(args[0]);
-				if (args.length < 1)
-					return false;
-
-				if (target == null) {
-					player.sendMessage(ChatColor.RED + args[0]
-							+ "is not online or doesn't exist!");
-					return false;
-				} else {
-
-					if (rc.isLess(player, target) && TestPlugin.pex) {
-						sender.sendMessage(ChatColor.RED
-								+ "You can't kill a player higher rank than you!");
-						return true;
-					}
-					target.setHealth(0);
-				}
-				return true;
-			} else {
-				Player target = Bukkit.getServer().getPlayer(args[0]);
-				if (args.length < 1)
-					return false;
-				if (target == null) {
-					sender.sendMessage(ChatColor.RED + args[0]
-							+ "is not online or doesn't exist!");
-					return false;
-				} else {
-
-					target.setHealth(0);
-				}
-				return true;
-			}
-
-		}
-
-		// SetHome Command
-		if (cmd.getName().equalsIgnoreCase("sethome")) {
-			if (!sender.hasPermission("TestPlugin.sethome")) {
-				sender.sendMessage(ChatColor.RED + "You don't have permission!");
-				return true;
-			}
-
-			if (!(sender instanceof Player)) {
-				sender.sendMessage("This can only be used by in-game Players");
-				return true;
-			}
-
-			Player player = (Player) sender;
-			Location location = player.getLocation();
-			player.setBedSpawnLocation(location, true);
-			player.sendMessage(ChatColor.GREEN + "Home Set!");
-			return true;
-		}
+		// SETHOME COMMAND
+		else if (cmd.getName().equalsIgnoreCase("sethome"))
+			return home.sethome(sender, cmd, label, args);
 
 		// HOME COMMAND
-		if (cmd.getName().equalsIgnoreCase("home")) {
-			if (!sender.hasPermission("TestPlugin.home")) {
-				sender.sendMessage(ChatColor.RED + "You don't have permission!");
-				return true;
-			}
-
-			if (!(sender instanceof Player)) {
-				sender.sendMessage("This can only be used by in-game Players");
-				return true;
-			}
-
-			Player player = (Player) sender;
-			Location location = player.getBedSpawnLocation();
-			if (location == null) {
-				player.sendMessage("No Home Exists");
-				return false;
-			}
-			player.teleport(location);
-			player.sendMessage(ChatColor.GREEN + "Teleported Home");
-			return true;
-		}
+		else if (cmd.getName().equalsIgnoreCase("home"))
+			return home.home(sender, cmd, label, args);
 
 		// FLY COMMAND
-		if (cmd.getName().equalsIgnoreCase("fly")) {
-			if (!sender.hasPermission("TestPlugin.fly")) {
-				sender.sendMessage(ChatColor.RED + "You don't have permission!");
-				return true;
-			}
-
-			if (!(sender instanceof Player)) {
-				sender.sendMessage("This can only be used by in-game Players");
-				return true;
-			}
-
-			if (args.length > 1)
-				return false;
-
-			Player player = (Player) sender;
-			// Set Player to allow flight
-			if (args.length == 0) {
-				if (!sender.hasPermission("TestPlugin.fly.me")) {
-					sender.sendMessage(ChatColor.RED
-							+ "You don't have permission!");
-					return true;
-				}
-				if (player.getAllowFlight()) {
-					player.setAllowFlight(false);
-					player.sendMessage(ChatColor.AQUA + "Flying Disabled!");
-				} else {
-					player.setAllowFlight(true);
-					player.sendMessage(ChatColor.AQUA + "Flying Enabled!");
-				}
-				return true;
-			}
-
-			// Allow different player to fly
-			else if (args.length == 1) {
-				if (!sender.hasPermission("TestPlugin.fly.others")) {
-					sender.sendMessage(ChatColor.RED
-							+ "You don't have permission!");
-					return true;
-				}
-
-				Player target = player.getServer().getPlayer(args[0]);
-				if (target == null) {
-					sender.sendMessage(ChatColor.RED + args[0]
-							+ "is not online");
-					return false;
-				}
-				if (target.getAllowFlight()) {
-					target.setAllowFlight(false);
-					player.sendMessage(ChatColor.AQUA + "Flying Disabled!");
-				} else {
-					player.setAllowFlight(true);
-					player.sendMessage(ChatColor.AQUA + "Flying Enabled!");
-				}
-				return true;
-			}
-
-			return false;
-		}
+		else if (cmd.getName().equalsIgnoreCase("fly"))
+			return fly.fly(sender, cmd, label, args);
 
 		// HEAL COMMAND
-		if (cmd.getName().equalsIgnoreCase("heal")) {
-			if (args.length > 1) {
-				sender.sendMessage("Invalid Parameters!");
-				return false;
-			}
-			if (!(sender instanceof Player)) {
-				if (args.length == 0) {
-					sender.sendMessage("Can't Heal Non-Player!");
-					return false;
-				}
-
-			} else {
-				if (args.length == 0) {
-					if (!sender.hasPermission("TestPlugin.heal.me")) {
-						sender.sendMessage(ChatColor.RED
-								+ "You don't have permission!");
-						return true;
-					}
-					Player player = (Player) sender;
-					double health = player.getMaxHealth();
-					player.setHealth(health);
-					player.setFoodLevel(20);
-					player.sendMessage(ChatColor.YELLOW + "Healed!");
-					return true;
-				}
-			}
-
-			if (args.length == 1) {
-				if (!sender.hasPermission("TestPlugin.heal.others")) {
-					sender.sendMessage(ChatColor.RED
-							+ "You don't have permission!");
-					return true;
-				}
-				Player target = Bukkit.getServer().getPlayer(args[0]);
-				if (target == null) {
-					if (!(sender instanceof Player))
-						sender.sendMessage(args[0] + "is not Online!");
-					else {
-						Player player = (Player) sender;
-						player.sendMessage(ChatColor.RED + args[0]
-								+ "is not online or doesn't exist!");
-					}
-
-					return false;
-				}
-
-				double health = target.getMaxHealth();
-				target.setFoodLevel(20);
-				target.setHealth(health);
-				target.sendMessage(ChatColor.YELLOW + "Healed!");
-				return true;
-			} else
-				return false;
-
-		}
+		else if (cmd.getName().equalsIgnoreCase("heal"))
+			return heal.heal(sender, cmd, label, args);
 
 		// BROADCAST COMMAND
-		if (cmd.getName().equalsIgnoreCase("broadcast")) {
-			if (!sender.hasPermission("TestPlugin.broadcast")) {
-				sender.sendMessage(ChatColor.RED + "You don't have permission!");
-				return true;
-			}
-			if (args.length == 0)
-				return false;
-			String message = StringUtils.join(args, " ", 0, args.length);
-			String newMessage = ChatColor.translateAlternateColorCodes('&', message);
-			Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[CONSOLE]: " + ChatColor.RESET + newMessage);
-			return true;
-		}
+		else if (cmd.getName().equalsIgnoreCase("broadcast"))
+			return broadcast.broadcast(sender, cmd, label, args);
 
 		// GOD COMMAND
-		if (cmd.getName().equalsIgnoreCase("god")) {
-
-			if (!(sender instanceof Player)) {
-				sender.sendMessage("Cannot be used by non-player");
-				return true;
-			}
-
-			Player player = (Player) sender;
-			if (args.length == 0) {
-				if (!sender.hasPermission("TestPlugin.god.me")) {
-					sender.sendMessage(ChatColor.RED
-							+ "You don't have permission!");
-					return true;
-				}
-				if (!(godToggleList.contains(player.getName()))) {
-					godToggleList.add(player.getName());
-					player.sendMessage(ChatColor.GREEN + "Godmode Enabled!");
-				} else {
-					godToggleList.remove(player.getName());
-					player.sendMessage(ChatColor.GREEN + "Godmode Disabled!");
-				}
-				return true;
-			}
-
-			else if (args.length == 1) {
-				if (!sender.hasPermission("TestPlugin.god.others")) {
-					sender.sendMessage(ChatColor.RED
-							+ "You don't have permission!");
-					return true;
-				}
-				Player target = player.getServer().getPlayer(args[0]);
-				if (target == null) {
-					player.sendMessage(ChatColor.RED + args[0]
-							+ "is not online or doesn't exist!");
-					return false;
-				} else {
-
-					if (!(godToggleList.contains(target.getName()))) {
-						godToggleList.add(target.getName());
-						player.sendMessage(ChatColor.GREEN + "Godmode Enabled for " + target.getName() + "!");
-					} else {
-						godToggleList.remove(target.getName());
-						player.sendMessage(ChatColor.GREEN
-								+ "Godmode Disabled for" + target.getName() + "!");
-					}
-					return true;
-				}
-
-			}
-
-			else {
-				player.sendMessage(ChatColor.RED + "Invalid Parameters");
-				return false;
-			}
-
-		}
+		else if (cmd.getName().equalsIgnoreCase("god"))
+			return god.god(sender, cmd, label, args);
 
 		// KICK COMMAND
-		if (cmd.getName().equalsIgnoreCase("kick")) {
+		else if (cmd.getName().equalsIgnoreCase("kick"))
 			return um.kick(sender, cmd, label, args);
-		}
 		
 		//TESTP COMMAND
-		if (cmd.getName().equalsIgnoreCase("TestP")) {
+		else if (cmd.getName().equalsIgnoreCase("TestP")) {
 			if (args.length == 0) {
 				return tpc.test(sender, cmd, label, args);
 			}
@@ -421,6 +130,47 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 					return false;
 				}
 			}
+		}
+		
+		//Repair Command
+		else if (cmd.getName().equalsIgnoreCase("repair")) {
+			if (!(sender instanceof Player)) {
+				sender.sendMessage(ChatColor.GRAY + "Cannot be used by Non-Player");
+				return true;
+			}
+			if (!sender.hasPermission("TestPlugin.repair")) {
+				sender.sendMessage(ChatColor.RED + "You don't have permission!");
+				return true;
+			}
+			Player player = (Player) sender;
+			ItemStack i = player.getItemInHand();
+			i.setDurability((short)0);
+			player.sendMessage(ChatColor.GREEN + "Repaired!");
+			return false;
+		}
+		
+		else if (cmd.getName().equalsIgnoreCase("speed")) {
+			if (!(sender instanceof Player)) {
+				sender.sendMessage(ChatColor.GRAY + "Cannot be used by Non-Player");
+				return true;
+			}
+			if (!sender.hasPermission("TestPlugin.speed")) {
+				sender.sendMessage(ChatColor.RED + "You don't have permission!");
+				return true;
+			}
+			Player player = (Player) sender;
+			return false;
+			
+			
+			
+		}
+		
+		else if (cmd.getName().equalsIgnoreCase("viewinv")) {
+			return false;
+		}
+		
+		if (cmd.getName().equalsIgnoreCase("")) {
+			return false;
 		}
 
 		//

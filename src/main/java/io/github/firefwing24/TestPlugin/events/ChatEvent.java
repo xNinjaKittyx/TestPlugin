@@ -1,4 +1,6 @@
-package io.github.firefwing24.TestPlugin;
+package io.github.firefwing24.TestPlugin.events;
+
+import io.github.firefwing24.TestPlugin.TestPlugin;
 
 import java.util.regex.Pattern;
 

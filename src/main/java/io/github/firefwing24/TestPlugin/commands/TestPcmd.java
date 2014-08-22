@@ -1,4 +1,6 @@
-package io.github.firefwing24.TestPlugin;
+package io.github.firefwing24.TestPlugin.commands;
+
+import io.github.firefwing24.TestPlugin.TestPlugin;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -8,7 +10,6 @@ public class TestPcmd {
 	private  TestPlugin plugin;
 
 	public TestPcmd() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public boolean test(CommandSender sender, Command cmd, String label, String[] args){

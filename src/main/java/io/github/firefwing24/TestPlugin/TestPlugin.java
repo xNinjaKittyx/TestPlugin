@@ -1,6 +1,9 @@
 package io.github.firefwing24.TestPlugin;
 
 
+import io.github.firefwing24.TestPlugin.events.ChatEvent;
+import io.github.firefwing24.TestPlugin.events.GodEvent;
+import io.github.firefwing24.TestPlugin.events.MOTDEvent;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -34,7 +37,7 @@ public final class TestPlugin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		
-		new MOTDHandler(this);
+		new MOTDEvent(this);
 		new ChatEvent(this);
 		new GodEvent(this);
 
@@ -53,21 +56,19 @@ public final class TestPlugin extends JavaPlugin {
 				new TestPluginCommandExecutor(this));
 		this.getCommand("fly").setExecutor(new TestPluginCommandExecutor(this));
 		this.getCommand("god").setExecutor(new TestPluginCommandExecutor(this));
-		this.getCommand("heal")
-				.setExecutor(new TestPluginCommandExecutor(this));
-		this.getCommand("home")
-				.setExecutor(new TestPluginCommandExecutor(this));
-		this.getCommand("kick")
-				.setExecutor(new TestPluginCommandExecutor(this));
-		this.getCommand("kill")
-				.setExecutor(new TestPluginCommandExecutor(this));
-		this.getCommand("sethome").setExecutor(
-				new TestPluginCommandExecutor(this));
+		this.getCommand("heal").setExecutor(new TestPluginCommandExecutor(this));
+		this.getCommand("home").setExecutor(new TestPluginCommandExecutor(this));
+		this.getCommand("kick").setExecutor(new TestPluginCommandExecutor(this));
+		this.getCommand("kill").setExecutor(new TestPluginCommandExecutor(this));
+		this.getCommand("repair").setExecutor(new TestPluginCommandExecutor(this));
+		this.getCommand("sethome").setExecutor(new TestPluginCommandExecutor(this));
 		//this.getCommand("TestP")
 		//		.setExecutor(new TestPluginCommandExecutor(this));
 		this.getCommand("tp").setExecutor(new TestPluginCommandExecutor(this));
-		this.getCommand("tphere").setExecutor(
-				new TestPluginCommandExecutor(this));
+		this.getCommand("tpa").setExecutor(new TestPluginCommandExecutor(this));
+		this.getCommand("tpaccept").setExecutor(new TestPluginCommandExecutor(this));
+		this.getCommand("tpdeny").setExecutor(new TestPluginCommandExecutor(this));
+		this.getCommand("tphere").setExecutor(new TestPluginCommandExecutor(this));
 		this.getCommand("who").setExecutor(new TestPluginCommandExecutor(this));
 		this.getCommand("w").setExecutor(new TestPluginCommandExecutor(this));
 
