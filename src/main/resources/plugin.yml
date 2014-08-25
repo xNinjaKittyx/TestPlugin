@@ -22,21 +22,24 @@ commands:
     home:
         description: Spawn at home location
         usage: "Usage: /home"
-    kick:
-        description: Kick a player
-        usage: "Usage: /kick <player> [reason]"
     kill:
         description: Kill a player.
         usage: "Usage: /kill <player>"
     repair:
         description: Repair an item in hand.
         usage: "Usage: /repair"
+    spawn:
+       description: Spawn at spawnpoint.
+       usage: "Usage: /spawn"
+    setspawn:
+       description: Set Spawnpoint
+       usage: "Usage: /setspawn"
     sethome:
         description: Set your home location
         usage: "Usage: /kill <player>"
-    TestP:
+    testplugin:
         description: Different TestPlugin Commands
-        usage: "Usage: /testp <args1> :"
+        usage: "Usage: /testplugin [args]: Valid Arguments: reload."
     tp:
         description: Teleport to someone or somewhere
         usage: "Usage: /tp <player> || <player1> <player2> || <x> <y> <z>"
@@ -44,16 +47,16 @@ commands:
         description: Request a tp to a player.
         usage: "Usage: /tpa <player>"
     tpaccept:
-        description: Accept a request
+        description: Accept a request.
         usage: "Usage: /tpaccept"
     tpdeny:
-        description: Repair an item in hand.
-        usage: "Usage: /tpdeny="
+        description: Deny a request.
+        usage: "Usage: /tpdeny"
     tphere:
-        description: Teleport a player to your location
+        description: Teleport a player to your location.
         usage: "Usage: /tphere <player>"
     who:
-        description: Show who's online
+        description: Show who's online.
         usage: "Usage: /who"
     w:
         description: Whisper to a player.
@@ -67,9 +70,13 @@ permissions:
             TestPlugin.fly: true
             TestPlugin.home: true
             TestPlugin.kill: true
+            TestPlugin.repair: true
             TestPlugin.sethome: true
+            TestPlugin.spawn: true
+            TestPlugin.setspawn: true
             TestPlugin.test: true
             TestPlugin.tp: true
+            TestPlugin.tpc: true
             TestPlugin.who: true
             TestPlugin.whisper: true
     TestPlugin.broadcast:
@@ -123,6 +130,12 @@ permissions:
     TestPlugin.sethome:
         description: Permission to set home.
         default: true
+    TestPlugin.spawn:
+        description: Spawn at spawnpoint.
+        default: true
+    TestPlugin.setspawn:
+        description: Set a spawnpoint.
+        default: op
     TestPlugin.tp:
         description: Gives access to all TP commands
         children:
@@ -145,6 +158,17 @@ permissions:
         default: op
     TestPlugin.tphere:
         description: Teleport Player to your location
+        default: op
+    TestPlugin.tpc:
+        description: Gives all TestPlugin commands.
+        children:
+            TestPlugin.tpc.test: true
+            TestPlugin.tpc.reload: true
+    TestPlugin.tpc.test:
+        description: Tests if plugin is alive.
+        default: op
+    TestPlugin.tpc.reload:
+        description: Reloads configs.
         default: op
     TestPlugin.who:
         description: Displays Players that are online

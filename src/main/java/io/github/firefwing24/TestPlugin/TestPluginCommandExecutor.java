@@ -10,10 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class TestPluginCommandExecutor implements CommandExecutor {
-	private final TestPlugin plugin;
 	private CommandTP tp = new CommandTP();
 	private UserManagement um = new UserManagement();
-	private TestPcmd tpc = new TestPcmd();
+	private CommandTestPlugin tpc = new CommandTestPlugin();
 	private CommandKill kill = new CommandKill();
 	private CommandHome home = new CommandHome();
 	private CommandChat chat = new CommandChat();
@@ -23,8 +22,6 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 	private CommandBroadcast broadcast = new CommandBroadcast();
 	
 	public TestPluginCommandExecutor(TestPlugin plugin) {
-		this.plugin = plugin; // Store the plugin in situations where you need
-								// it.
 	}
 
 	@Override
@@ -115,8 +112,8 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 		else if (cmd.getName().equalsIgnoreCase("kick"))
 			return um.kick(sender, cmd, label, args);
 		
-		//TESTP COMMAND
-		else if (cmd.getName().equalsIgnoreCase("TestP")) {
+		//TESTPLUGIN COMMAND
+		else if (cmd.getName().equalsIgnoreCase("testplugin")) {
 			if (args.length == 0) {
 				return tpc.test(sender, cmd, label, args);
 			}
@@ -132,6 +129,15 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			}
 		}
 		
+		//Spawn Command
+		
+		else if (cmd.getName().equalsIgnoreCase("spawn"))
+			return tp.spawn(sender, cmd, label, args);
+		
+		//SETSPAWN
+		else if (cmd.getName().equalsIgnoreCase("setspawn"))
+			return tp.setSpawn(sender, cmd, label, args);
+		
 		//Repair Command
 		else if (cmd.getName().equalsIgnoreCase("repair")) {
 			if (!(sender instanceof Player)) {
@@ -146,7 +152,7 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 			ItemStack i = player.getItemInHand();
 			i.setDurability((short)0);
 			player.sendMessage(ChatColor.GREEN + "Repaired!");
-			return false;
+			return true;
 		}
 		
 		else if (cmd.getName().equalsIgnoreCase("speed")) {

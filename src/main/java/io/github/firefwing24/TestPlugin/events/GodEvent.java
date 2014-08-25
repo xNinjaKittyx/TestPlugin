@@ -11,8 +11,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public class GodEvent implements Listener {
 
-	private CommandGod god = new CommandGod();
-
 	public GodEvent(TestPlugin plugin) {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
@@ -22,7 +20,7 @@ public class GodEvent implements Listener {
 		Entity ent = e.getEntity();
 
 		if (ent instanceof Player) {
-			if (god.godToggleList.contains(((Player) ent)
+			if (CommandGod.godToggleList.contains(((Player) ent)
 					.getName()))
 				e.setCancelled(true);
 		} else {

@@ -6,14 +6,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-public class TestPcmd {
+public class CommandTestPlugin {
 	private  TestPlugin plugin;
-
-	public TestPcmd() {
-	}
 	
 	public boolean test(CommandSender sender, Command cmd, String label, String[] args){
-		if (sender.hasPermission("TestPlugin.testpcmd.test")){
+		if (sender.hasPermission("TestPlugin.tpc.test")){
 			sender.sendMessage("TestPlugin is online and working !");
 		}
 		else
@@ -23,8 +20,12 @@ public class TestPcmd {
 	}
 	
 	public boolean reload(CommandSender sender, Command cmd, String label, String[] args) {
-		plugin.reloadConfig();
-		sender.sendMessage("TestPlugin Config Reloaded!");
+		if (!sender.hasPermission("TestPlugin.tpc.reload")){
+			sender.sendMessage(ChatColor.RED + "You don't have permission!");
+			return true;
+		}
+		plugin.loadYamls();
+		sender.sendMessage(ChatColor.GREEN + "Configs Reloaded!");
 		return true;
 	}
 }

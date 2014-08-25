@@ -9,15 +9,18 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.yaml.snakeyaml.error.YAMLException;
 
 public class CommandTP {
 
 	private PEXRankCheck rc = new PEXRankCheck();
 	private long keepAlive = 600;
+	TestPlugin plugin = new TestPlugin();
 	
 	public Map<String,String> requests = new HashMap<String,String>();
 
@@ -36,7 +39,7 @@ public class CommandTP {
 		Player player = (Player) sender;
 		Player target = player.getServer().getPlayer(args[0]);
 		if (target == null) {
-			player.sendMessage(ChatColor.RED + args[0] + "is not Online");
+			player.sendMessage(ChatColor.RED + args[0] + " is not Online");
 			return false;
 		}
 		if (target == player) {
@@ -74,10 +77,10 @@ public class CommandTP {
 			return true;
 		} else {
 			if (target1 == null) {
-				sender.sendMessage(ChatColor.RED + args[0] + "is not Online");
+				sender.sendMessage(ChatColor.RED + args[0] + " is not Online");
 			}
 			else if (target2 == null) {
-				sender.sendMessage(ChatColor.RED + args[0] + "is not Online");
+				sender.sendMessage(ChatColor.RED + args[0] + " is not Online");
 			}
 			return false;
 		}
@@ -121,7 +124,7 @@ public class CommandTP {
 		if (args.length == 1) {
 			Player bringTarget = player.getServer().getPlayer(args[0]);
 			if (bringTarget == null) {
-				player.sendMessage(ChatColor.RED + args[0] + "is not Online");
+				player.sendMessage(ChatColor.RED + args[0] + " is not Online");
 				return false;
 			}
 
@@ -151,7 +154,7 @@ public class CommandTP {
 			return true;
 		}
 		if (!sender.hasPermission("TestPlugin.tpa")){
-			sender.sendMessage(ChatColor.RED + "You don't have permissions!");
+			sender.sendMessage(ChatColor.RED + "You don't have permission!");
 			return true;
 		}
 		if (args.length != 1) {
@@ -161,7 +164,7 @@ public class CommandTP {
 		Player sent = (Player) sender;
 		final Player receiver = Bukkit.getServer().getPlayer(args[0]);
 		if (receiver == null) {
-			sent.sendMessage(ChatColor.RED + args[0] + "is not Online");
+			sent.sendMessage(ChatColor.RED + args[0] + " is not Online");
 			return false;
 		}
 
@@ -170,29 +173,30 @@ public class CommandTP {
 			return false;
 		}
 		String sentName = sent.getName();
-		String receiverName = receiver.getName();
+		final String receiverName = receiver.getName();
 		requests.put(receiverName, sentName);
 		sent.sendMessage(ChatColor.GREEN + "Request Sent to " + receiverName);
 		receiver.sendMessage(ChatColor.YELLOW + "You receive a request to teleport from " + sentName);
 		receiver.sendMessage(ChatColor.YELLOW + "To accept the teleport request, type " +  ChatColor.RED + "/tpaccept" + ChatColor.YELLOW + ".");
 		receiver.sendMessage(ChatColor.YELLOW + "To deny the teleport request, type " +  ChatColor.RED + "/tpdeny" + ChatColor.YELLOW + ".");
 		
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask((Plugin) this, new Runnable() {
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin , new Runnable() {
+			@Override
 			public void run() {
-				killRequest(receiver.getName());
+				killRequest(receiverName);
 			}
-		}, keepAlive);
+		}, 600L);
 		
 		return true;
 	}
 	
 	public boolean tpaccept(CommandSender sender, Command cmd, String label, String[] args) {
 		if (!(sender instanceof Player)) {
-			sender.sendMessage(ChatColor.GRAY + "Console can't accept tp requests you baka.");
+			sender.sendMessage(ChatColor.GRAY + "Console can't accept tp requests");
 			return true;
 		}
 		if (!sender.hasPermission("TestPlugin.tpa")){
-			sender.sendMessage(ChatColor.RED + "You don't have permissions!");
+			sender.sendMessage(ChatColor.RED + "You don't have permission!");
 			return true;
 		}
 		Player receiver = (Player) sender;
@@ -222,7 +226,7 @@ public class CommandTP {
 			return true;
 		}
 		if (!sender.hasPermission("TestPlugin.tpa")){
-			sender.sendMessage(ChatColor.RED + "You don't have permissions!");
+			sender.sendMessage(ChatColor.RED + "You don't have permission!");
 			return true;
 		}
 
@@ -264,10 +268,71 @@ public class CommandTP {
 	}
 	
 	public boolean spawn(CommandSender sender, Command cmd, String label, String[] args) {
+		if (!(sender instanceof Player)) {
+			sender.sendMessage(ChatColor.GRAY + "Console can't spawn.");
+			return true;
+		}
+		if (!sender.hasPermission("TestPlugin.spawn")){
+			sender.sendMessage(ChatColor.RED + "You don't have permission!");
+			return true;
+		}
+		Player player = (Player) sender;
+		double x, y, z;
+		String w = null;
+		float yaw, pitch;
+		try {
+			w = plugin.getConfig().getString("TPManagement.Spawn.world");
+			World world = Bukkit.getServer().getWorld(w);
+			if (world == null) {
+				player.sendMessage(ChatColor.RED + "A spawn hasn't been set yet!");
+				return true;
+			}
+			x = plugin.getConfig().getDouble("TPManagement.Spawn.x");
+			y = plugin.getConfig().getDouble("TPManagement.Spawn.y");
+			z = plugin.getConfig().getDouble("TPManagement.Spawn.z");
+			yaw = (float) plugin.getConfig().getDouble("TPManagement.Spawn.yaw");
+			pitch = (float) plugin.getConfig().getDouble("TPManagement.Spawn.pitch");
+			
+			
+			Location location = new Location(world, x, y, z, yaw, pitch);
+			player.teleport(location);
+			
+		} catch (YAMLException ex) {
+			Bukkit.getConsoleSender().sendMessage("YAML ERROR");
+		}
+		
 		return true;
 	}
 	
-	public boolean setspawn(CommandSender sender, Command cmd, String label, String[] args) {
+	public boolean setSpawn(CommandSender sender, Command cmd, String label, String[] args) {
+
+		if (!(sender instanceof Player)) {
+			sender.sendMessage(ChatColor.GRAY + "Console can't set a spawn.");
+			return true;
+		}
+		if (!sender.hasPermission("TestPlugin.setspawn")){
+			sender.sendMessage(ChatColor.RED + "You don't have permissions!");
+			return true;
+		}
+		Player player = (Player) sender;
+		Location location = player.getLocation();
+		double x, y, z, yaw, pitch;
+		String world = location.getWorld().getName();
+		x = location.getX();
+		y = location.getY();
+		z = location.getZ();
+		yaw = (double) location.getYaw();
+		pitch = (double) location.getPitch();
+		
+		plugin.getConfig().set("TPManagement.Spawn.world", world);
+		plugin.getConfig().set("TPManagement.Spawn.x", x);
+		plugin.getConfig().set("TPManagement.Spawn.y", y);
+		plugin.getConfig().set("TPManagement.Spawn.z", z);
+		plugin.getConfig().set("TPManagement.Spawn.yaw", yaw);
+		plugin.getConfig().set("TPManagement.Spawn.pitch", pitch);
+		
+		plugin.loadYamls();
+		
 		return true;
 	}
 
