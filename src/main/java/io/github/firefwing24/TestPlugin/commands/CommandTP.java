@@ -20,8 +20,7 @@ public class CommandTP {
 
 	private PEXRankCheck rc = new PEXRankCheck();
 	private long keepAlive = 600;
-	TestPlugin plugin = new TestPlugin();
-	
+	TestPlugin plugin;
 	public Map<String,String> requests = new HashMap<String,String>();
 
 	public CommandTP() {

@@ -34,10 +34,6 @@ public final class TestPlugin extends JavaPlugin {
 
 	// Values of Config
 
-	public TestPlugin() {
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	public void onDisable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
@@ -59,7 +55,7 @@ public final class TestPlugin extends JavaPlugin {
 		
 		config = new YamlConfiguration();
 		
-		loadYamls();
+		loadYamls(); 
 		
 
 		/*

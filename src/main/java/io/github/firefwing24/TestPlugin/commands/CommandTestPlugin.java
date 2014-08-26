@@ -7,7 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class CommandTestPlugin {
-	private  TestPlugin plugin;
+	TestPlugin plugin;
 	
 	public boolean test(CommandSender sender, Command cmd, String label, String[] args){
 		if (sender.hasPermission("TestPlugin.tpc.test")){
