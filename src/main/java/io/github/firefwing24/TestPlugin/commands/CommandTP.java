@@ -20,7 +20,6 @@ public class CommandTP {
 
 	private PEXRankCheck rc = new PEXRankCheck();
 	private long keepAlive = 600;
-	TestPlugin plugin;
 	public Map<String,String> requests = new HashMap<String,String>();
 
 	public CommandTP() {
@@ -179,7 +178,7 @@ public class CommandTP {
 		receiver.sendMessage(ChatColor.YELLOW + "To accept the teleport request, type " +  ChatColor.RED + "/tpaccept" + ChatColor.YELLOW + ".");
 		receiver.sendMessage(ChatColor.YELLOW + "To deny the teleport request, type " +  ChatColor.RED + "/tpdeny" + ChatColor.YELLOW + ".");
 		
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin , new Runnable() {
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TestPlugin.plugin , new Runnable() {
 			@Override
 			public void run() {
 				killRequest(receiverName);
@@ -280,17 +279,17 @@ public class CommandTP {
 		String w = null;
 		float yaw, pitch;
 		try {
-			w = plugin.getConfig().getString("TPManagement.Spawn.world");
+			w = TestPlugin.plugin.getConfig().getString("TPManagement.Spawn.world");
 			World world = Bukkit.getServer().getWorld(w);
 			if (world == null) {
 				player.sendMessage(ChatColor.RED + "A spawn hasn't been set yet!");
 				return true;
 			}
-			x = plugin.getConfig().getDouble("TPManagement.Spawn.x");
-			y = plugin.getConfig().getDouble("TPManagement.Spawn.y");
-			z = plugin.getConfig().getDouble("TPManagement.Spawn.z");
-			yaw = (float) plugin.getConfig().getDouble("TPManagement.Spawn.yaw");
-			pitch = (float) plugin.getConfig().getDouble("TPManagement.Spawn.pitch");
+			x = TestPlugin.plugin.getConfig().getDouble("TPManagement.Spawn.x");
+			y = TestPlugin.plugin.getConfig().getDouble("TPManagement.Spawn.y");
+			z = TestPlugin.plugin.getConfig().getDouble("TPManagement.Spawn.z");
+			yaw = (float) TestPlugin.plugin.getConfig().getDouble("TPManagement.Spawn.yaw");
+			pitch = (float) TestPlugin.plugin.getConfig().getDouble("TPManagement.Spawn.pitch");
 			
 			
 			Location location = new Location(world, x, y, z, yaw, pitch);
@@ -323,14 +322,14 @@ public class CommandTP {
 		yaw = (double) location.getYaw();
 		pitch = (double) location.getPitch();
 		
-		plugin.getConfig().set("TPManagement.Spawn.world", world);
-		plugin.getConfig().set("TPManagement.Spawn.x", x);
-		plugin.getConfig().set("TPManagement.Spawn.y", y);
-		plugin.getConfig().set("TPManagement.Spawn.z", z);
-		plugin.getConfig().set("TPManagement.Spawn.yaw", yaw);
-		plugin.getConfig().set("TPManagement.Spawn.pitch", pitch);
+		TestPlugin.plugin.getConfig().set("TPManagement.Spawn.world", world);
+		TestPlugin.plugin.getConfig().set("TPManagement.Spawn.x", x);
+		TestPlugin.plugin.getConfig().set("TPManagement.Spawn.y", y);
+		TestPlugin.plugin.getConfig().set("TPManagement.Spawn.z", z);
+		TestPlugin.plugin.getConfig().set("TPManagement.Spawn.yaw", yaw);
+		TestPlugin.plugin.getConfig().set("TPManagement.Spawn.pitch", pitch);
 		
-		plugin.loadYamls();
+		TestPlugin.plugin.loadYamls();
 		
 		return true;
 	}

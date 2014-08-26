@@ -21,9 +21,6 @@ public class UserManagement {
 	//Soon i will make this automatic so that whenever a player joins, it should automatically be entered into the list.
 	//When they leave, they should be removed from the list.
 
-	public UserManagement() {
-	}
-
 	public boolean kick(CommandSender sender, Command cmd, String label,
 			String[] args) {
 		if (!sender.hasPermission("TestPlugin.kick")) {
@@ -37,7 +34,7 @@ public class UserManagement {
 
 		else {
 
-			Player playerToKick = Bukkit.getServer().getPlayerExact(args[0]);
+			Player playerToKick = Bukkit.getServer().getPlayer(args[0]);
 			if (playerToKick == null) {
 				sender.sendMessage(ChatColor.RED + args[0] + "is not Online");
 				return false;

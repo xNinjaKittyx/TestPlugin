@@ -20,8 +20,10 @@ public class TestPluginCommandExecutor implements CommandExecutor {
 	private CommandHeal heal = new CommandHeal();
 	private CommandGod god = new CommandGod();
 	private CommandBroadcast broadcast = new CommandBroadcast();
+	private final TestPlugin plugin;
 	
 	public TestPluginCommandExecutor(TestPlugin plugin) {
+		this.plugin = plugin;
 	}
 
 	@Override

@@ -7,7 +7,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class CommandTestPlugin {
-	TestPlugin plugin;
 	
 	public boolean test(CommandSender sender, Command cmd, String label, String[] args){
 		if (sender.hasPermission("TestPlugin.tpc.test")){
@@ -24,7 +23,7 @@ public class CommandTestPlugin {
 			sender.sendMessage(ChatColor.RED + "You don't have permission!");
 			return true;
 		}
-		plugin.loadYamls();
+		TestPlugin.plugin.loadYamls();
 		sender.sendMessage(ChatColor.GREEN + "Configs Reloaded!");
 		return true;
 	}

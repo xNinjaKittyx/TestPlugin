@@ -78,7 +78,6 @@ public final class TestPlugin extends JavaPlugin {
 		this.getCommand("god").setExecutor(new TestPluginCommandExecutor(this));
 		this.getCommand("heal").setExecutor(new TestPluginCommandExecutor(this));
 		this.getCommand("home").setExecutor(new TestPluginCommandExecutor(this));
-		this.getCommand("kick").setExecutor(new TestPluginCommandExecutor(this));
 		this.getCommand("kill").setExecutor(new TestPluginCommandExecutor(this));
 		this.getCommand("repair").setExecutor(new TestPluginCommandExecutor(this));
 		this.getCommand("sethome").setExecutor(new TestPluginCommandExecutor(this));

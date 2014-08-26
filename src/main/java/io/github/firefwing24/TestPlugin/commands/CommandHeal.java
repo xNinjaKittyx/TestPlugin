@@ -8,8 +8,6 @@ import org.bukkit.entity.Player;
 
 public class CommandHeal {
 
-	public CommandHeal() {
-	}
 
 	public boolean heal(CommandSender sender, Command cmd, String label, String[] args) {
 		if (args.length > 1) {
