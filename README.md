@@ -30,7 +30,7 @@ Commands:
         usage: "Usage: /kill <player>"
     sethome:
         description: Set your home location
-        usage: "Usage: /kill <player>"
+        usage: "Usage: /sethome"
     test:
         description: Test if Plugin is working.
         usage: "Usage: /test"
