@@ -1,11 +1,10 @@
-TestPlugin
-==========
+#TestPlugin
 v. 0.0.3
 Creating a Test Plugin for Bukkit Minecraft
 
 
-Commands:
-
+#Commands:
+```
     broadcast:
         description: Broadcast a message to the server
         usage: "Usage: /broadcast [message]"
@@ -46,9 +45,11 @@ Commands:
     w:
         description: Whisper to a player.
         usage: "Usage: /w <player>"
-        
-permissions:
+```
 
+#permissions
+
+```
     TestPlugin.*:
         description: Gives access to all TestPlugin commands
         children:
@@ -137,3 +138,4 @@ permissions:
     TestPlugin.whisper:
         description: Allow Player to Whisper
         default: true
+```
