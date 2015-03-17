@@ -47,7 +47,7 @@ Creating a Test Plugin for Bukkit Minecraft
         usage: "Usage: /w <player>"
 ```
 
-#permissions
+#Permissions
 
 ```
     TestPlugin.*:
