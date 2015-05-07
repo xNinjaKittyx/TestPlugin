@@ -1,5 +1,8 @@
 #TestPlugin
 v. 0.0.3
+
+No Longer Being Developed. Moved to NK-Core
+https://github.com/xNinjaKittyx/NK-Core
 Creating a Test Plugin for Bukkit Minecraft
 
 
